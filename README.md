@@ -1,6 +1,4 @@
-#UADE - Universidad Argentina de la Empresa
-#Proyecto Final de Ingeniería
-#Text-Mining
+#UADE - Universidad Argentina de la Empresa#Proyecto Final de Ingeniería#Text-Mining
 
 #_Alumnos:_
 - Martín Ciparelli
