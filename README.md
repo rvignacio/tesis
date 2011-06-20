@@ -1,4 +1,4 @@
-#UADE - Universidad Argentina de la Empresa
+#Universidad Argentina de la Empresa - UADE
 ###Proyecto Final de Ingeniería
 ###Text-Mining
 
