@@ -15,7 +15,7 @@ Descripción:
 ========================
 Trabajo de investigación final de la carrera de Ingeniería en Informática. 
 Se trata de una aplicación que permita realizar análisis sintáctico de textos de especificación de requerimientos con fines a automatizar la generación del LEL (léxico de lenguaje extendido).
-Milestone1:
+- Milestone1:
 /a desarrollar/
 
 Tecnologías utilizadas:
