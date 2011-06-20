@@ -3,7 +3,7 @@
 #### Text-Mining
 ==
 _Alumnos:_
-=
+
 Martín Ciparelli
 Ignacio Ríos Vazquez
 
