@@ -2,10 +2,10 @@ UADE - Universidad Argentina de la Empresa
 Proyecto Final de Ingeniería
 Text-Mining
 _Alumnos:_
--Martín Ciparelli
--Ignacio Ríos Vazquez
+- Martín Ciparelli
+- Ignacio Ríos Vazquez
 _Tutor:_
--Ricardo Wehbe
+- Ricardo Wehbe
 
 Descripción:
 ============
@@ -16,6 +16,6 @@ Milestone1:
 
 Tecnologías utilizadas:
 ============
--[NodeJS](http://nodejs.org)
--[Express](http://expressjs.com)
--[Jade](http://jade-lang.com)
+- [NodeJS](http://nodejs.org)
+- [Express](http://expressjs.com)
+- [Jade](http://jade-lang.com)
