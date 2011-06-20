@@ -1,10 +1,8 @@
-UADE - Universidad Argentina de la Empresa
-=
-Proyecto Final de Ingeniería
-=
-Text-Mining
-=
-_Alumnos:_
+#UADE - Universidad Argentina de la Empresa
+#Proyecto Final de Ingeniería
+#Text-Mining
+
+#_Alumnos:_
 - Martín Ciparelli
 - Ignacio Ríos Vazquez
 _Tutor:_
