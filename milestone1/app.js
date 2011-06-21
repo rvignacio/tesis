@@ -28,15 +28,23 @@ app.configure('production', function(){
 
 
 // Routes
+
+//controlador por default
 app.get('/', function(req, res){
 	res.render('index', {
 		title: 'Funci√≥n sint√°ctica de una palabra'
 	});
 });
-app.get('/wordcheck',function(req,res){
-	syntacticSearchService.check(req.query.word,function(syntaxFunction){
+
+/* controlador que busca la funciÛn sint·ctica de
+ * una palabra en el servicio web 
+ */
+app.get('/syntacticSearch',function(req,res){
+	
+	syntacticSearchService.search(req.query.word,function(syntaxFunction){
     	res.send('es '+(syntaxFunction.join(', ').replace(/,([^,]*)/,' y$1') || '... NO TENEMOS IDEA!!! =)'));
     	});
+
 });
 
 

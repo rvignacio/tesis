@@ -15,7 +15,11 @@
 					data : 'word='+word,
 					success : function(result){
 						
-						console.log(result);
+						/* result es un array con las funciones sintácticas de 
+						 * la palabra consultada hay que mostrar todos los valores
+						 * que contiene
+						 */
+						$this.find('definition');
 						
 					}
 				});
