@@ -3,7 +3,7 @@
  */
 
 var express = require('express'),
-	wordchecker = require('./libs/wordchecker');
+	syntacticSearchService = require('./libs/syntacticSearchService');
 
 var app = module.exports = express.createServer();
 
@@ -34,7 +34,7 @@ app.get('/', function(req, res){
 	});
 });
 app.get('/wordcheck',function(req,res){
-	wordchecker.check(req.query.word,function(syntaxFunction){
+	syntacticSearchService.check(req.query.word,function(syntaxFunction){
     	res.send('es '+(syntaxFunction.join(', ').replace(/,([^,]*)/,' y$1') || '... NO TENEMOS IDEA!!! =)'));
     	});
 });
