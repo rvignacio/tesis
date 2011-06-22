@@ -1,9 +1,9 @@
 Scripts varios utilizados para testing durante el desarrollo:
 
 
--Toma la primera entrada de cada definiciÛn del diccionario, se representa 
+-Toma la primera entrada de cada definici√≥n del diccionario, se representa 
 como el primer elemento li dentro de cada ol.entry. Son los elementos que
-contienen la abreviatura que indica la funciÛn sint·ctica de la palabra.
+contienen la abreviatura que indica la funci√≥n sint√°ctica de la palabra.
 
 $("ol.entry").find("li:first")
 	.each(function(index,elem){
