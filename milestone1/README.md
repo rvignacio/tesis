@@ -1,3 +1,3 @@
 Milestone1
 ========================
-Consiste de una aplicación web simple que permite consultar la función sintáctica de una palabra ingresada por el usuario.
+Consiste de una aplicaciÃ³n web simple que permite consultar la funciÃ³n sintÃ¡ctica de una palabra ingresada por el usuario.

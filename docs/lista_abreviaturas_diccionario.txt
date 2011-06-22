@@ -1,11 +1,11 @@
 sustantivo: (f.|m.|s.)
 f. femenino
 m. masculino
-s. sustantivo (figura en la lista, pero no se encontró en ninguna definición hasta ahora)
+s. sustantivo (figura en la lista, pero no se encontrÃ³ en ninguna definiciÃ³n hasta ahora)
 
 adjetivo: (adj.|art.)
 adj. adjetivo
-art. artículo
+art. artÃ­culo
 
 verbo: (v.|Del verbo|tr.|intr.|prnl.)
 v. verbo
@@ -17,5 +17,5 @@ prnl. pronominal
 adverbio: (adv.)
 adv. adverbio
 
-preposición: (prep.)
-prep. preposición
+preposiciÃ³n: (prep.)
+prep. preposiciÃ³n
