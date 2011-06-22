@@ -1,48 +1,85 @@
-module.exports.check = function(word,cb){
-	var $ = require('jquery'), http = require('http'), options = {
-		host: 'www.wordreference.com',
-		port: 80,
-		path: '/definicion/'+word,
-		method: 'GET',
-		headers: {
-			'User-Agent': "Im a fake and you know it"
-		}
-	}, data = '', req = http.request(options, function(res) {
-		res.on('error', function(e) {
-			var msj = 'Got error from '+options.host+': ' +e.message;
-			console.log(msj);
-			cb(msj);
-		});
-		res.on('data', function(chunk){
-			data += chunk;
-		})
-		res.on('end',function(){
-			var html = $(data), conj = html.find('dt:contains(\'Del verbo\')').length, firstEntry = html.find('ol.entry > li:first').text(), syntaxFunction = [];
-			if (/^(v|tr|intr)\./.test(firstEntry) || conj){
-				var sf = 'verbo'
-				if (conj){
-					sf += ' (conjugado)';
-				}
-				syntaxFunction.push(sf);
+/* Servicio
+ *
+ */
+module.exports.check = function(word,callback){
+	
+	var $ = require('jquery'),
+		http = require('http'),
+		data = '';
+
+	var options = {
+			host: 'www.wordreference.com',
+			port: 80,
+			path: '/definicion/'+word,
+			method: 'GET',
+			headers: {
+				'User-Agent': "Im a fake and you know it"
 			}
-			if (/^adv\./.test(firstEntry)){
-				syntaxFunction.push('adverbio');
-			}
-			if (/^prep\./.test(firstEntry)){
-				syntaxFunction.push('preposici√≥n');
-			}
-			if (/^adj\./.test(firstEntry)){
-				syntaxFunction.push('adjetivo');
-			}
-			if (/^art\./.test(firstEntry)){
-				syntaxFunction.push('art√≠culo');
-			}
-			if (/^(f|m|s)\./.test(firstEntry)){
-				syntaxFunction.push('sustantivo');
-			}
-			console.log('Got response from '+options.host+': ' + res.statusCode);
-			cb(syntaxFunction);
-		});
+		};
+	
+	var req = http.request(options, function(res) {
+			
+			res.on('error', function(e) {
+				
+				var msj = 'Got error from '+options.host+': ' +e.message;
+				console.log(msj);
+				callback(msj);
+			
+			});
+
+			res.on('data', function(chunk){
+				data += chunk;
+			});
+
+			res.on('end',function(){
+				
+				var html = $(data), 
+					conj = html.find('dt:contains(\'Del verbo\')').length, 
+					syntacticFunction = [];
+
+				
+				//Para cada entrada en el diccionario
+				html.find('ol.entry').each(function(index, entry){
+				
+					//toma el texto de la primer definiciÛn, esta es la que contiene la 
+					//abreviatura que indica la funciÛn sint·ctica
+					var first_entry = $(entry).children('li:first').text();
+
+					if (/^(v|tr|intr|prnl)\./.test(first_entry) || conj){
+						var sf = 'verbo'
+						if (conj){
+							sf += ' (conjugado)';
+						}
+						syntacticFunction.push(sf);
+					}
+
+					if (/^adv\./.test(first_entry)){
+						syntaxFunction.push('adverbio');
+					}
+					if (/^prep\./.test(first_entry)){
+						syntaxFunction.push('preposici√≥n');
+					}
+					if (/^adj\./.test(first_entry)){
+						syntaxFunction.push('adjetivo');
+					}
+					if (/^art\./.test(first_entry)){
+						syntaxFunction.push('art√≠culo');
+					}
+					if (/^(f|m|s)\./.test(first_entry)){
+						syntaxFunction.push('sustantivo');
+					}
+
+				});
+				
+				console.log('Respuesta de '+options.host+': ' + res.statusCode);
+				
+				callback(syntaxFunction);
+			
+			});
+			//end res.on('end...
 	});
+	//end function(res){...
+	
 	req.end();
+
 }
