@@ -41,8 +41,8 @@ module.exports.check = function(word,callback){
 				//Para cada entrada en el diccionario
 				html.find('ol.entry').each(function(index, entry){
 				
-					//toma el texto de la primer definiciÛn, esta es la que contiene la 
-					//abreviatura que indica la funciÛn sint·ctica
+					//toma el texto de la primer definici√≥n, esta es la que contiene la 
+					//abreviatura que indica la funci√≥n sint√°ctica
 					var first_entry = $(entry).children('li:first').text();
 
 					if (/^(v|tr|intr|prnl)\./.test(first_entry) || conj){
