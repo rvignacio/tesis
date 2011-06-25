@@ -15,7 +15,7 @@
 					data : 'word='+word,
 					success : function(result){
 						
-						/* result es un array con las funciones sint·cticas de 
+						/* result es un array con las funciones sint√°cticas de 
 						 * la palabra consultada hay que mostrar todos los valores
 						 * que contiene
 						 */

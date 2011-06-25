@@ -1,12 +1,13 @@
 /* Servicio que busca la función sintáctica de la palabra en 
  *
  */
-exports.search = function(word,callback){
+exports.search = function(word){
 	
-	var $ = require('../public/js/jquery-1.6.1'),
+	var $ = require('jquery'),
 		http = require('http'),
-		data = '';
-
+		data = '',
+		syntacticFunctions = [];
+	
 	var options = {
 			host: 'www.wordreference.com',
 			port: 80,
@@ -34,8 +35,7 @@ exports.search = function(word,callback){
 			res.on('end',function(){
 				
 				var html = $(data), 
-					conj = html.find('dt:contains(\'Del verbo\')').length, 
-					syntacticFunction = [];
+					conj = html.find('dt:contains(\'Del verbo\')').length;
 
 				
 				//Para cada entrada en el diccionario
@@ -50,30 +50,30 @@ exports.search = function(word,callback){
 						if (conj){
 							sf += ' (conjugado)';
 						}
-						syntacticFunction.push(sf);
+						syntacticFunctions.push(sf);
 					}
 
 					if (/^adv\./.test(first_entry)){
-						syntaxFunction.push('adverbio');
+						syntacticFunctions.push('adverbio');
 					}
 					if (/^prep\./.test(first_entry)){
-						syntaxFunction.push('preposición');
+						syntacticFunctions.push('preposición');
 					}
 					if (/^adj\./.test(first_entry)){
-						syntaxFunction.push('adjetivo');
+						syntacticFunctions.push('adjetivo');
 					}
 					if (/^art\./.test(first_entry)){
-						syntaxFunction.push('artículo');
+						syntacticFunctions.push('artículo');
 					}
 					if (/^(f|m|s)\./.test(first_entry)){
-						syntaxFunction.push('sustantivo');
+						syntacticFunctions.push('sustantivo');
 					}
 
 				});
 				
 				console.log('Respuesta de '+options.host+': ' + res.statusCode);
-				
-				callback(syntaxFunction);
+				console.log('funciones dentro del req: '+syntacticFunctions);
+				//callback(syntacticFunction);
 			
 			});
 			//end res.on('end...
@@ -82,4 +82,8 @@ exports.search = function(word,callback){
 	
 	req.end();
 
+	console.log('Funciones fuera del req: '+syntacticFunctions);
+
+	return syntacticFunctions;
+	
 }
