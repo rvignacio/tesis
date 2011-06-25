@@ -36,7 +36,7 @@ app.get('/', function(req, res){
 	});
 });
 
-/* controlador que busca la función sintáctica de
+/* controlador que busca la funci?n sint?ctica de
  * una palabra en el servicio web 
  */
 app.get('/syntacticSearch',function(req,res){

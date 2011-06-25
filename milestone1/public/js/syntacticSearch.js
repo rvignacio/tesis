@@ -20,7 +20,7 @@
 						 * que contiene
 						 */
 						$this.find('definition');
-						
+						console.log(result);
 					}
 				});
 			

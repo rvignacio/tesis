@@ -1,9 +1,9 @@
-/* Servicio
+/* Servicio que busca la función sintáctica de la palabra en 
  *
  */
-module.exports.check = function(word,callback){
+exports.search = function(word,callback){
 	
-	var $ = require('jquery'),
+	var $ = require('../public/js/jquery-1.6.1'),
 		http = require('http'),
 		data = '';
 
