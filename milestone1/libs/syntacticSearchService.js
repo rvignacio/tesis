@@ -1,17 +1,16 @@
 /* Servicio que busca la función sintáctica de la palabra en 
  *
  */
-exports.search = function(word){
+exports.search = function(word, callback){
 	
 	var $ = require('jquery'),
 		http = require('http'),
-		data = '',
-		syntacticFunctions = [];
-	
+		data = '';
+
 	var options = {
 			host: 'www.wordreference.com',
 			port: 80,
-			path: '/definicion/'+word,
+			path: '/definicion/'+encodeURIComponent(word),
 			method: 'GET',
 			headers: {
 				'User-Agent': "Im a fake and you know it"
@@ -35,7 +34,8 @@ exports.search = function(word){
 			res.on('end',function(){
 				
 				var html = $(data), 
-					conj = html.find('dt:contains(\'Del verbo\')').length;
+					conj = html.find('dt:contains(\'Del verbo\')').length,
+					syntacticFunctions = [];
 
 				
 				//Para cada entrada en el diccionario
@@ -73,7 +73,7 @@ exports.search = function(word){
 				
 				console.log('Respuesta de '+options.host+': ' + res.statusCode);
 				console.log('funciones dentro del req: '+syntacticFunctions);
-				//callback(syntacticFunction);
+				callback(syntacticFunctions);
 			
 			});
 			//end res.on('end...
@@ -81,9 +81,5 @@ exports.search = function(word){
 	//end function(res){...
 	
 	req.end();
-
-	console.log('Funciones fuera del req: '+syntacticFunctions);
-
-	return syntacticFunctions;
 	
 }

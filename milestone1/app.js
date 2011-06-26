@@ -41,12 +41,11 @@ app.get('/', function(req, res){
  */
 app.get('/syntacticSearch',function(req,res){
 	
-	/*syntacticSearchService.search(req.query.word,function(syntacticFunction){
-    	res.send('es '+(syntaxFunction.join(', ').replace(/,([^,]*)/,' y$1') || '... NO TENEMOS IDEA!!! =)'));
-    	});*/
-	var syntacticFunctions = syntacticSearchService.search(req.query.word);
-	console.log('Funciones en el app.js: '+syntacticFunctions);
-	res.send(syntacticFunctions);
+	syntacticSearchService.search(req.query.word,function(syntacticFunctions){
+		
+		res.send(syntacticFunctions);
+    
+	});
 
 });
 
