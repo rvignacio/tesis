@@ -1,7 +1,13 @@
+
+Nota: tener en cuenta los casos en que las entradas se componen de la forma:
+    adj. y s. como en la definición de usuario (ver issue 4 de la milestone1)
+
+
+
 sustantivo: (f.|m.|s.)
 f. femenino
 m. masculino
-s. sustantivo (figura en la lista, pero no se encontró en ninguna definición hasta ahora)
+s. sustantivo
 
 adjetivo: (adj.|art.)
 adj. adjetivo
