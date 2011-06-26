@@ -25,3 +25,6 @@ adv. adverbio
 
 preposición: (prep.)
 prep. preposición
+
+conjunción: (conj.)
+conj. conjunción

@@ -2,6 +2,35 @@
 	
 	$.fn.syntacticSearch = function(){
 		
+		return this.each(function(){
+			
+			//cache this
+			var $this = $( this );
+			
+			//delega la función search al evento click del botón
+			$this.find( '.search' ).click( function(){
+				
+				search($this);
+				return false;
+
+			});
+
+			//delega la función search al evento keypress de la tecla enter en el formulario
+			$this.find( '.word' ).keypress( function(e){
+
+				if( e.which === 13 ){
+
+					search($this);
+					return false;
+
+				}
+				
+			});
+		
+		});
+
+
+
 		/* función que envía al server la consulta al servicio syntactiSearchService 
 		 * y procesa la respuesta
 		 */
@@ -36,6 +65,8 @@
 						  .hide()
 						  .slideDown(1500);
 
+						addToList( value, word );
+
 					});
 
 					//Si no se encontró una definición
@@ -48,6 +79,8 @@
 						  .hide()
 						  .slideDown(1500);
 
+						addToList( null, word );
+
 					}
 					
 					//console.log(result);
@@ -57,34 +90,78 @@
 			
 		}
 		//end of function search()
-		
-		return this.each(function(){
-			
-			//cache this
-			var $this = $( this );
-			
-			//delega la función search al evento click del botón
-			$this.find( '.search' ).click( function(){
-				
-				search($this);
-				return false;
 
-			});
 
-			//delega la función search al evento keypress de la tecla enter en el formulario
-			$this.find( '.word' ).keypress( function(e){
+		function addToList( value, word ){
 
-				if( e.which === 13 ){
+			if( value === 'sustantivo' ){
+				$('<li>',{
+					text: word
+				}).appendTo($('#sustantivos ul','#listas'))
+				  .hide()
+				  .fadeIn(1500);
+			}
 
-					search($this);
-					return false;
+			if( (value === 'verbo') || (value === 'verbo conjugado') ){
+				$('<li>',{
+					text: word
+				}).appendTo($('#verbos ul','#listas'))
+				  .hide()
+				  .fadeIn(1500);
+			}
 
-				}
-				
-			});
-		
-		});
+			if( value === 'adjetivo' ){
+				$('<li>',{
+					text: word
+				}).appendTo($('#adjetivos ul','#listas'))
+				  .hide()
+				  .fadeIn(1500);
+			}
+
+			if( value === 'articulo' ){
+				$('<li>',{
+					text: word
+				}).appendTo($('#articulos ul','#listas'))
+				  .hide()
+				  .fadeIn(1500);
+			}
+
+			if( value === 'adverbio' ){
+				$('<li>',{
+					text: word
+				}).appendTo($('#adverbios ul','#listas'))
+				  .hide()
+				  .fadeIn(1500);
+			}
+
+			if( value === 'preposiciones' ){
+				$('<li>',{
+					text: word
+				}).appendTo($('#preposiciones ul','#listas'))
+				  .hide()
+				  .fadeIn(1500);
+			}
+
+			if( value === 'conjunciones' ){
+				$('<li>',{
+					text: word
+				}).appendTo($('#conjunciones ul','#listas'))
+				  .hide()
+				  .fadeIn(1500);
+			}
+
+			if( value === null ){
+				$('<li>',{
+					text: word
+				}).appendTo($('#indeterminadas ul','#listas'))
+				  .hide()
+				  .fadeIn(1500);
+			}
+
+		}
+		//end of function addToList()
 
 	};
+	//end of plugin
 
 })(jQuery);
