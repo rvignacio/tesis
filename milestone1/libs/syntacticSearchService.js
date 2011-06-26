@@ -44,29 +44,28 @@ exports.search = function(word, callback){
 					//toma el texto de la primer definición, esta es la que contiene la 
 					//abreviatura que indica la función sintáctica
 					var first_entry = $(entry).children('li:first').text();
-
-					if (/^(v|tr|intr|prnl)\./.test(first_entry) || conj){
+					
+					if (/(^| y )(v|tr|intr|prnl|aux)\./.test(first_entry) || conj){
 						var sf = 'verbo'
 						if (conj){
 							sf += ' (conjugado)';
 						}
 						syntacticFunctions.push(sf);
 					}
-
-					if (/^adv\./.test(first_entry)){
+					if (/(^| y )(f|m|s)\./.test(first_entry)){
+						syntacticFunctions.push('sustantivo');
+					}
+					if (/(^| y )adv\./.test(first_entry)){
 						syntacticFunctions.push('adverbio');
 					}
-					if (/^prep\./.test(first_entry)){
+					if (/(^| y )prep\./.test(first_entry)){
 						syntacticFunctions.push('preposición');
 					}
-					if (/^adj\./.test(first_entry)){
+					if (/(^| y )adj\./.test(first_entry)){
 						syntacticFunctions.push('adjetivo');
 					}
-					if (/^art\./.test(first_entry)){
+					if (/(^| y )art\./.test(first_entry)){
 						syntacticFunctions.push('artículo');
-					}
-					if (/^(f|m|s)\./.test(first_entry)){
-						syntacticFunctions.push('sustantivo');
 					}
 
 				});
