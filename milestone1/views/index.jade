@@ -1,14 +1,13 @@
 div#container
 	h1= title
-	p Ingrese una palabra:
-	
+	p Cargue un archivo de texto:
+	input(type='file')
+	p o ingrese una palabra:
 	section.syntacticSearch
 		form
 			input.word( type='text' )
 			input.search( type='button', value='Buscar' )
-	
 		ul.definitions
-	
 	section#listas
 		h2 Palabras clasificadas:
 		div#sustantivos.lista
@@ -35,8 +34,6 @@ div#container
 		div#indeterminadas.lista
 			h3 Palabras no encontradas:
 			ul
-
 script(src='/js/jquery-1.6.1.js')
 script(src='/js/syntacticSearch.js')
-script
-	$('.syntacticSearch').syntacticSearch();
+script(src='/js/scripts.js')

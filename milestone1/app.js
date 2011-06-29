@@ -32,7 +32,7 @@ app.configure('production', function(){
 //controlador por default
 app.get('/', function(req, res){
 	res.render('index', {
-		title: 'Función sintáctica de una palabra'
+		title: 'Evaluación de funciones sintácticas'
 	});
 });
 
@@ -48,6 +48,7 @@ app.get('/syntacticSearch',function(req,res){
 	});
 
 });
+
 
 
 // Only listen on $ node app.js

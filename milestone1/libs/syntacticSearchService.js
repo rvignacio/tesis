@@ -1,4 +1,4 @@
-/* Servicio que busca la función sintáctica de la palabra en 
+/* Servicio que busca la función sintáctica una palabra 
  *
  */
 exports.search = function(word, callback){
@@ -74,10 +74,6 @@ exports.search = function(word, callback){
 
 					}
 					if ( /(^| y )art\./.test(first_entry) ){
-
-						if( $.inArray( 'adjetivo' , syntacticFunctions ) === -1 ){
-							syntacticFunctions.push( 'adjetivo' );
-						}
 						if( $.inArray( 'artículo' , syntacticFunctions ) === -1 ){
 							syntacticFunctions.push( 'artículo' );
 						}
@@ -108,7 +104,7 @@ exports.search = function(word, callback){
 				});
 				
 				console.log( '->syntacticSearchService: respuesta de '+options.host+': ' + res.statusCode );
-				console.log( '->syntacticSearchService: funciones dentro del req: '+syntacticFunctions );
+				console.log( '->syntacticSearchService: funciones dentro del req: '+syntacticFunctions.join(', ') );
 				callback(syntacticFunctions);
 			
 			});
