@@ -21,7 +21,7 @@ exports.search = function(word, callback){
 			
 			res.on('error', function(e) {
 				
-				var msj = 'Got error from '+options.host+': ' +e.message;
+				var msj = 'Error recibido de '+options.host+': ' +e.message;
 				console.log(msj);
 				callback(msj);
 			
@@ -100,7 +100,13 @@ exports.search = function(word, callback){
 						}
 
 					}
+					if ( /(^| y )pron\./.test(first_entry) ){
 
+						if( $.inArray( 'pronombre' , syntacticFunctions ) === -1 ){
+							syntacticFunctions.push( 'pronombre' );
+						}
+
+					}
 				});
 				
 				console.log( '->syntacticSearchService: respuesta de '+options.host+': ' + res.statusCode );

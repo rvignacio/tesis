@@ -50,7 +50,6 @@ app.get('/syntacticSearch',function(req,res){
 });
 
 
-
 // Only listen on $ node app.js
 if (!module.parent) {
 	app.listen(3000);

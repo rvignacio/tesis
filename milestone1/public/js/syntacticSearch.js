@@ -43,7 +43,10 @@ function search(word) {
 
 
 function addToList( value, word ){
-	var speed = 500, uls = [];
+	
+	var speed = 500,
+		uls = [];
+	
 	if( value === 'sustantivo'){
 		uls.push('#sustantivos ul');
 	}
@@ -55,7 +58,7 @@ function addToList( value, word ){
 		uls.push('#adjetivos ul');
 	}
 
-	if( value === 'articulo' ){
+	if( value === 'artículo' ){
 		uls.push('#articulos ul');
 	}
 
@@ -63,21 +66,24 @@ function addToList( value, word ){
 		uls.push('#adverbios ul');
 	}
 
-	if( value === 'preposiciones' ){
+	if( value === 'preposición' ){
 		uls.push('#preposiciones ul');
 	}
 
-	if( value === 'conjunciones' ){
+	if( value === 'conjunción' ){
 		uls.push('#conjunciones ul');
 	}
-
+	if( value === 'pronombre' ){
+		uls.push('#pronombres ul');
+	}
 	if( value === null ){
 		uls.push('#indeterminadas ul');
 	}
+
 	uls.forEach(function(ul){
 		ul = $(ul);
 		if (!ul.find('li').filter(function(){
-			return $(this).text()==word;
+			return $(this).text() === word;
 		}).length){
 			$('<li>',{
 				text: word
@@ -94,7 +100,9 @@ function addToList( value, word ){
 	$.fn.syntacticSearch = function(){
 		return this.each(function(){
 			//cache this
-			var $this = $( this ), wordEl = $this.find('.word');
+			var $this = $( this ),
+				wordEl = $this.find('.word');
+			
 			//delega la función search al evento click del botón
 			$this.find( '.search' ).click( function(){
 				search.call($this,wordEl.val());
