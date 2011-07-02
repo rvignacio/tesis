@@ -28,3 +28,6 @@ prep. preposición
 
 conjunción: (conj.)
 conj. conjunción
+
+pronombre: (pron.)
+pron. pronombre
