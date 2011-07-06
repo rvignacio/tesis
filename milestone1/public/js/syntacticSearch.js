@@ -33,10 +33,13 @@ function searchSuccess(syntacticFunctions,word){
 /* función que envía al server la consulta al servicio syntactiSearchService 
  * y procesa la respuesta
  */
-function search(word) {
+function search(word,cb) {
 	var $this = this;
 	$.get('/syntacticSearch','word='+word,function(data){
 		searchSuccess.call($this,data,word);
+		if (typeof cb !== 'undefined'){
+			cb(data);
+		}
 	});
 }
 //end of function search()

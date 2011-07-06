@@ -1,8 +1,35 @@
 body {
   padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  font: 13px Helvetica, Arial, sans-serif;
 }
 
 a {
   color: #00B7FF;
+}
+
+p#file_text {
+	display: inline-block;
+	padding: 10px;
+}
+
+span.classified {
+	text-decoration: underline;
+	position: relative;
+}
+
+span.tooltip {
+	display:none;
+	position: absolute;
+}
+span:hover .tooltip{
+	display:block;
+	top:22px;
+	left: 0px;
+	background: #EEE;
+	border: 1px solid #CCC;
+	padding: 4px 5px 5px;
+	width: 180px;
+	margin: 0;
+	z-index: 1;
+	font-weight: normal;
 }
