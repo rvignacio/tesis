@@ -1,5 +1,5 @@
+/* Estilos definidos anteriormente */
 body {
-  padding: 50px;
   font: 13px Helvetica, Arial, sans-serif;
 }
 
@@ -33,3 +33,50 @@ span:hover .tooltip{
 	z-index: 1;
 	font-weight: normal;
 }
+
+
+/*IRV - Definición de estilos - 14/08/2011 */
+body, footer {
+	background: url("../images/bg.jpg");
+	padding: 20px;
+}
+
+#container{
+	background: #666;  
+	margin: auto;  
+	width: 960px;  
+	height: 700px;  
+	padding-top: 30px; 
+}
+
+h1 {
+	font-size: 40px;
+	background: #e3e3e3;
+	background: -moz-linear-gradient(top, #e3e3e3, #c8c8c8);
+	background: -webkit-gradient(linear, left top, left bottom, from(#e3e3e3), to(#c8c8c8));
+	padding: 10px 20px;
+	margin-left: -20px;
+	margin-top: 0;
+	position: relative;
+	width: 90%;
+
+	-moz-box-shadow: 1px 1px 3px #292929;
+	-webkit-box-shadow: 1px 1px 3px #292929;
+	box-shadow: 1px 1px 3px #292929;
+
+	color: #454545;
+	text-shadow: 0 1px 0 white;
+}
+
+.arrow {  
+	width: 0;
+	height: 0;  
+	line-height: 0;  
+	border-left: 20px solid transparent;  
+	border-top: 10px solid #c8c8c8;  
+	top: 101%;  
+	left: 0;  
+	position: absolute;  
+}  
+
+
