@@ -98,6 +98,7 @@ function addToList( value, word ){
 	
 }
 //end of function addToList()
+
 (function($){
 	
 	$.fn.syntacticSearch = function(){

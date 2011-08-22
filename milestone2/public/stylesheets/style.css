@@ -36,33 +36,47 @@ span:hover .tooltip{
 
 
 /*IRV - Definición de estilos - 14/08/2011 */
+body {
+	height:700px;
+}
+
 body, footer {
 	background: url("../images/bg.jpg");
 }
 
+footer {
+	width: 960px;
+	margin: 0px auto;
+}
+
+.copyright {
+	margin: 10px;
+	float: right;
+	color: #878787;
+	text-shadow: 0 1px 0 #ffffff;
+}
+
 #container {
-	background: url("../images/bg_container.jpg") repeat-x;
-	margin: auto;  
-	width: 960px;  
-	height: 700px;  
+	width: 960px;
+	height: 100%;
+	margin: auto;
 	padding: 30px;
+	background: url("../images/bg_container.jpg") repeat-x;
 }
 
 h1 {
+	width: 90%;
+	margin: 0 0 20px -20px;
+	padding: 10px 20px;
+	position: relative;
+	left: -30px;
 	font-size: 40px;
 	background: #e3e3e3;
 	background: -moz-linear-gradient(top, #e3e3e3, #c8c8c8);
 	background: -webkit-gradient(linear, left top, left bottom, from(#e3e3e3), to(#c8c8c8));
-	padding: 10px 20px;
-	margin: 0 0 20px -20px;
-	position: relative;
-	left: -30px;
-	width: 90%;
-
 	-moz-box-shadow: 1px 1px 3px #292929;
 	-webkit-box-shadow: 1px 1px 3px #292929;
 	box-shadow: 1px 1px 3px #292929;
-
 	color: #454545;
 	text-shadow: 0 1px 0 white;
 }
@@ -70,12 +84,12 @@ h1 {
 .arrow {  
 	width: 0;
 	height: 0;  
+	position: absolute;  
+	top: 101%;  
+	left: 0;  
 	line-height: 0;  
 	border-left: 20px solid transparent;  
 	border-top: 10px solid #c8c8c8;  
-	top: 101%;  
-	left: 0;  
-	position: absolute;  
 }
 
 h2 {
@@ -85,14 +99,57 @@ h2 {
 	text-shadow: 0 1px 0 #ffffff;
 }
 
+h3 {
+	font-size: 1.15em;
+	font-weight: 400;
+	color: #888888;
+	text-shadow: 0 1px 0 #ffffff;
+}
+
 #listas{
 	margin: 30px 0 0 0;
 }
 
 .lista {
-	border-top: 1px solid #dddddd;
-	border-bottom: 1px solid #aaaaaa;
+	width: 200px;
 	margin: 0px 20px;
 	padding: 10px 5px;
-	width: 200px;
+	border-top: 1px solid #dddddd;
+	border-bottom: 1px solid #aaaaaa;
+}
+
+/*Estilos para el plug-in syntacticSearch*/
+.syntacticSearch {
+	height: 30px;
+}
+
+.syntacticSearch form {
+	width: 300px;
+}
+
+.syntacticSearch .definitions {
+	width: 250px;
+	padding-left: 40px;
+	position: relative;
+	top: -90px;
+	left: 340px;
+	-moz-box-shadow: 1px 1px 3px #888888;
+	-webkit-box-shadow: 1px 1px 3px #888888;
+	box-shadow: 1px 1px 3px #888888;
+	list-style-type: hiragana;
+}
+
+.syntacticSearch .definition {
+	height: 30px;
+	padding: 5px 0;	
+	line-height: 30px;
+	font-size: 1.2em;
+	color: #a5a5a5;
+	text-shadow: 0 -1px 0 #454545;
+}
+
+.lista ul {
+	margin: 5px 30px;
+	color: #696969;
+	list-style-type: georgian;
 }
