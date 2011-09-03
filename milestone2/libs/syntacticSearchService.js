@@ -111,7 +111,7 @@ exports.search = function(word, callback){
 				
 				console.log( '->syntacticSearchService: respuesta de '+options.host+': ' + res.statusCode );
 				console.log( '->syntacticSearchService: funciones dentro del req: '+syntacticFunctions.join(', ') );
-				callback(syntacticFunctions);
+				callback(null, syntacticFunctions);
 			
 			});
 			//end res.on('end...

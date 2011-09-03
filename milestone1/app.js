@@ -35,18 +35,13 @@ app.get('/', function(req, res){
 		title: 'Evaluación de funciones sintácticas'
 	});
 });
-
 /* controlador que busca la funci?n sint?ctica de
  * una palabra en el servicio web 
  */
 app.get('/syntacticSearch',function(req,res){
-	
 	syntacticSearchService.search(req.query.word,function(syntacticFunctions){
-		
 		res.send(syntacticFunctions);
-    
 	});
-
 });
 
 
