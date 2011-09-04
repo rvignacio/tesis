@@ -91,6 +91,32 @@ app.get('/', function(req, res){
 /* controlador que busca la funci?n sint?ctica de
  * una palabra en el servicio web 
  */
+app.get('/words/assign', function(req, res){
+	var notFound = [];
+	recli.smembers('words', function(err, words){
+		if (err){
+			throw new Error('error when trying to get words');
+			return;
+		}
+		var len = words.length;
+		words.forEach(function(word, idx){
+			var over = !(len-idx-1);
+			recli.smembers(word, function(ended){
+				return function(err, funcs){
+					if (!funcs[0]){
+						notFound.push(word);
+					}
+					if (over){
+						res.render('list', {
+							title: 'Lista de palabras no encontradas',
+							words: notFound
+						});					
+					}
+				}
+			}(over));
+		});
+	});
+});
 app.get('/syntacticSearch',search,function(req, res){
 	res.send(req.data);
 });
