@@ -101,7 +101,7 @@ app.get('/words/assign', function(req, res){
 		var len = words.length;
 		words.forEach(function(word, idx){
 			var over = !(len-idx-1);
-			recli.smembers(word, function(ended){
+			recli.smembers(word, function(over){
 				return function(err, funcs){
 					if (!funcs[0]){
 						notFound.push(word);
