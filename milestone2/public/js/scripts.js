@@ -1,5 +1,6 @@
-$(function(){
+(function(){
 	$('.syntacticSearch').syntacticSearch();
+	
 	$(':file').change(function(){
 		var reader = new FileReader();
 		reader.readAsText(this.files[0]);
@@ -25,4 +26,11 @@ $(function(){
 			});
 		}
 	});
-});
+
+
+	//agrega un select a las palabras indeterminadas
+	$('#indeterminadas ul','#listas').bind('contentChanged', function(){
+		$(this).find('li').addDefinition();
+	});
+	
+})();

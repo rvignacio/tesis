@@ -80,7 +80,18 @@ function addToList( value, word ){
 		uls.push('#pronombres ul');
 	}
 	if( value === null ){
-		uls.push('#indeterminadas ul');
+		//uls.push('#indeterminadas ul');
+		ul = $('#indeterminadas ul');
+		if (!ul.find('li').filter(function(){
+			return $(this).text() === word;
+		}).length){
+			$('<li>',{
+				text: word
+			}).appendTo(ul)
+			  .hide()
+			  .fadeIn(speed);
+		}
+		$('#indeterminadas ul','#listas').trigger('contentChanged');
 	}
 
 	uls.forEach(function(ul){
@@ -121,5 +132,37 @@ function addToList( value, word ){
 			});
 		});
 	};
-	//end of plugin
+	//end of plugin syntacticSearch
+
+	$.fn.addDefinition = function(){
+
+		return this.each(function(){
+
+			//cache this
+			var $this = $(this);
+
+			if($this.find('select').length === 0){
+				var	select = $('<select/>', {
+						'class': 'chosen'
+					}).appendTo($this),
+					defs = ['', 'sustantivo', 'verbo', 'adjetivo', 'artículo', 'adverbio', 'preposición', 'conjunción', 'pronombre'];
+
+				defs.forEach(function(def){
+
+					$('<option>',{
+						value: def,
+						text: def
+					}).appendTo(select);
+
+				});
+				//end of forEach
+			}
+			//end of if
+
+		});
+		//end of return
+
+	};
+	//end of plugin addDefinition
+
 })(jQuery);

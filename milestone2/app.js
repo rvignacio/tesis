@@ -8,7 +8,7 @@ var express = require('express'),
 	util = require("util");
 
 var app = module.exports = express.createServer(),
-	recli = redis.createClient();;
+	recli = redis.createClient();
 
 recli.on("error", function (err) {
     console.log("Error connecting to redis: "+err);
