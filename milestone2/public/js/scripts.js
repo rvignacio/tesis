@@ -28,9 +28,11 @@
 	});
 
 
-	//agrega un select a las palabras indeterminadas
+	/* Evento para agregar un select a las palabras indeterminadas, se ejecuta cada vez que
+	 * se inserta una palabra a la lista de indeterminadas
+	 */
 	$('#indeterminadas ul','#listas').bind('contentChanged', function(){
-		$(this).find('li').addDefinition();
+		$(this).find('li').addDefinitionSelect();
 	});
 	
 })();

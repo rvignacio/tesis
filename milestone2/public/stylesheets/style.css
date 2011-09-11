@@ -153,3 +153,13 @@ h3 {
 	color: #696969;
 	list-style-type: georgian;
 }
+
+.lista ul li {
+	width:180px;
+	margin: 5px 0px;;
+}
+
+.lista ul li select {
+	float: right;
+	font-size: 0.9em;
+}

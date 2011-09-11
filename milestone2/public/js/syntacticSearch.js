@@ -1,3 +1,14 @@
+//Definiciones de las distintas funciones sintácticas
+var syntacticNames = ['',
+					  'sustantivo',
+					  'verbo',
+					  'adjetivo',
+					  'artículo',
+					  'adverbio',
+					  'preposición',
+					  'conjunción',
+					  'pronombre'];
+
 function searchSuccess(syntacticFunctions,word){
 		/* result es un array con las funciones sintácticas de 
 		 * la palabra consultada, hay que mostrar todos los valores
@@ -30,7 +41,7 @@ function searchSuccess(syntacticFunctions,word){
 }
 
 
-/* función que envía al server la consulta al servicio syntactiSearchService 
+/* Función que envía al server la consulta al servicio syntactiSearchService 
  * y procesa la respuesta
  */
 function search(word,cb) {
@@ -49,7 +60,7 @@ function addToList( value, word ){
 	
 	var speed = 500,
 		uls = [];
-	
+
 	if( value === 'sustantivo'){
 		uls.push('#sustantivos ul');
 	}
@@ -91,6 +102,9 @@ function addToList( value, word ){
 			  .hide()
 			  .fadeIn(speed);
 		}
+	   /* Indica que cambió el contenido y debe agregarse un elemento select para
+		* permitir al usuario seleccionar la función sintáctica de la palabra
+		*/
 		$('#indeterminadas ul','#listas').trigger('contentChanged');
 	}
 
@@ -134,7 +148,7 @@ function addToList( value, word ){
 	};
 	//end of plugin syntacticSearch
 
-	$.fn.addDefinition = function(){
+	$.fn.addDefinitionSelect = function(){
 
 		return this.each(function(){
 
@@ -144,10 +158,9 @@ function addToList( value, word ){
 			if($this.find('select').length === 0){
 				var	select = $('<select/>', {
 						'class': 'chosen'
-					}).appendTo($this),
-					defs = ['', 'sustantivo', 'verbo', 'adjetivo', 'artículo', 'adverbio', 'preposición', 'conjunción', 'pronombre'];
+					}).appendTo($this);
 
-				defs.forEach(function(def){
+				syntacticNames.forEach(function(def){
 
 					$('<option>',{
 						value: def,
@@ -163,6 +176,6 @@ function addToList( value, word ){
 		//end of return
 
 	};
-	//end of plugin addDefinition
+	//end of plugin addDefinitionSelect
 
 })(jQuery);
