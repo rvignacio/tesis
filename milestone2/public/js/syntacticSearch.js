@@ -9,7 +9,7 @@ var syntacticNames = ['',
 					  'conjunción',
 					  'pronombre'];
 
-function searchSuccess(syntacticFunctions,word){
+$.fn.searchSuccess = function(syntacticFunctions,word){
 		/* result es un array con las funciones sintácticas de 
 		 * la palabra consultada, hay que mostrar todos los valores
 		 * que contiene.
@@ -19,17 +19,17 @@ function searchSuccess(syntacticFunctions,word){
 		 * de búsquedas anteriores.
 		 */
 			var definitions = this.find( '.definitions' ).html('');
-			$.each(syntacticFunctions, function(index, value){
-				$('<li>',{
-					'class' : 'definition',
-					text : value
-				}).appendTo(definitions)
-				  .hide()
-				  .fadeIn(500);
-				addToList( value, word );
-			});
-			//Si no se encontró una definición
-			if( !definitions.children().length ){
+			if (syntacticFunctions[0]){
+				$.each(syntacticFunctions, function(index, value){
+					$('<li>',{
+						'class' : 'definition',
+						text : value
+					}).appendTo(definitions)
+					  .hide()
+					  .fadeIn(500);
+					addToList( value, word );
+				});	
+			}else{
 				$('<li>',{
 					'class' : 'definition',
 					text : word+' no fue encontrada en el diccionario.'
@@ -44,13 +44,16 @@ function searchSuccess(syntacticFunctions,word){
 /* Función que envía al server la consulta al servicio syntactiSearchService 
  * y procesa la respuesta
  */
-function search(word,cb) {
+$.fn.search = function(word,cb) {
 	var $this = this;
-	$.get('/syntacticSearch','word='+word,function(data){
-		searchSuccess.call($this,data,word);
-		if (typeof cb !== 'undefined'){
-			cb(data);
-		}
+	var words = word.split(' ');
+	words.forEach(function(word){
+		$.get('/syntacticSearch','word='+word,function(data){
+			$this.searchSuccess(data,word);
+			if (typeof cb !== 'undefined'){
+				cb(data);
+			}
+		});
 	});
 }
 //end of function search()
@@ -90,14 +93,14 @@ function addToList( value, word ){
 	if( value === 'pronombre' ){
 		uls.push('#pronombres ul');
 	}
-	if( value === null ){
+	if( value === null || value === ''){
 		//uls.push('#indeterminadas ul');
 		ul = $('#indeterminadas ul');
 		if (!ul.find('li').filter(function(){
 			return $(this).text() === word;
 		}).length){
 			$('<li>',{
-				text: word
+				html: '<span>'+word+'</span>'
 			}).appendTo(ul)
 			  .hide()
 			  .fadeIn(speed);
@@ -134,13 +137,13 @@ function addToList( value, word ){
 			
 			//delega la función search al evento click del botón
 			$this.find( '.search' ).click( function(){
-				search.call($this,wordEl.val());
+				$this.search(wordEl.val());
 				return false;
 			});
 			//delega la función search al evento keypress de la tecla enter en el formulario
 			wordEl.keypress( function(e){
 				if( e.which === 13 ){
-					search.call($this,wordEl.val());
+					$this.search(wordEl.val());
 					return false;
 				}
 			});
@@ -161,10 +164,9 @@ function addToList( value, word ){
 					}).appendTo($this);
 
 				syntacticNames.forEach(function(def){
-
 					$('<option>',{
 						value: def,
-						text: def
+						text: def || 'elija una función'
 					}).appendTo(select);
 
 				});

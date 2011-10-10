@@ -108,7 +108,9 @@ exports.search = function(word, callback){
 
 					}
 				});
-				
+				if (!syntacticFunctions.length){
+					syntacticFunctions = [''];
+				}
 				console.log( '->syntacticSearchService: respuesta de '+options.host+': ' + res.statusCode );
 				console.log( '->syntacticSearchService: funciones dentro del req: '+syntacticFunctions.join(', ') );
 				callback(null, syntacticFunctions);

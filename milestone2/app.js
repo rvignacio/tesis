@@ -1,10 +1,10 @@
 /**
  * Module dependencies.
  */
-
 var express = require('express'),
 	syntacticSearchService = require('./libs/syntacticSearchService'),
 	redis = require("redis"),
+	Step = require('step');
 	util = require("util");
 
 var app = module.exports = express.createServer(),
@@ -24,32 +24,42 @@ recli.on("monitor", function (time, args) {
 var search = function(req, res, next){
 	var word = req.query.word;
 	if (word) {
-		recli.smembers(word, function(err, data){
+		recli.smembers('word:'+word+':functions', function(err, data){
 			if (err){
-				next(new Error('error when trying to get \''+word+'\' data: '+err));
-			}else if (data && data[0]){
+				next(new Error('error when looking up for \''+word+'\' functions locally: '+err));
+			}else if (data[0]){
 				req.data = data;
-				console.log('data from \''+word+'\' found locally');
+				console.log('functions from \''+word+'\' found locally');
 				next();	
 			}else{
 				syntacticSearchService.search(word, function(err, funcs){
 					if (err){
-						next(new Error('error when looking up for \''+word+'\': '+err));	
+						next(new Error('error when looking up for \''+word+'\' functions remotely: '+err));	
 					}else{
-						recli.sadd('words', word, function(err, data){
-							if (err){
-								next(new Error('error when creating \''+word+'\' in local DB: '+err));
-							}else{
-								recli.sadd(word, funcs.length?funcs:'', function(err, data){
-									if (err){
-										next(new Error('error when setting data to \''+word+'\': '+err));
-									}else{
-										req.data = funcs;
-										console.log('data from \''+word+'\' found remotely');
-										next();
-									}
-								});	
+						var multi = recli.multi();
+						Step(function addWord(){
+							multi.sadd('words', word);	
+							return this.parallel();
+						}, function addWordFunctions(){
+							if (funcs[0]){
+								multi.sadd('word:'+word+':functions', funcs);	
 							}
+							return this.parallel();
+						}, function addWordToFunctions(){
+							var group = this.group();
+							funcs.forEach(function(func){
+								multi.sadd('function:'+func+':words', word);
+								group()();
+							});
+						}, function goNext(err){
+							if (err){
+								multi.discard();
+								next(new Error('error when adding \''+word+'\' data: '+err));
+							}
+							multi.exec();
+							req.data = funcs;
+							console.log('functions from \''+word+'\' found remotely');
+							next();
 						});
 					}
 				});	
@@ -88,32 +98,42 @@ app.get('/', function(req, res){
 	});
 });
 
+app.post('/words/assign', function(req, res){
+	var multi = recli.multi(), word = req.body.word, fn = req.body.function;
+	multi.srem('function::words', word)
+	.sadd('word:'+word+':functions', fn)
+	.sadd('function:'+fn+':words', word)
+	.exec(function (err, replies){
+		if (err){
+			console.log(err);
+			res.send('');
+		}
+		res.send('1');
+	});
+});
+
 /* controlador que busca la funci?n sint?ctica de
  * una palabra en el servicio web 
  */
 app.get('/words/assign', function(req, res){
-	var notFound = [];
-	recli.smembers('words', function(err, words){
+
+	recli.smembers('function::words', function(err, words){
 		if (err){
 			throw new Error('error when trying to get words');
 			return;
 		}
-		var len = words.length;
-		words.forEach(function(word, idx){
-			var over = !(len-idx-1);
-			recli.smembers(word, function(over){
-				return function(err, funcs){
-					if (!funcs[0]){
-						notFound.push(word);
-					}
-					if (over){
-						res.render('list', {
-							title: 'Lista de palabras no encontradas',
-							words: notFound
-						});					
-					}
-				}
-			}(over));
+		res.render('list', {
+			title: 'Lista de palabras no encontradas',
+			words: words,
+			functions: ['',
+					  'sustantivo',
+					  'verbo',
+					  'adjetivo',
+					  'artículo',
+					  'adverbio',
+					  'preposición',
+					  'conjunción',
+					  'pronombre']
 		});
 	});
 });

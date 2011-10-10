@@ -2,8 +2,12 @@ div#container
 	h1= title
 		span.arrow
 	ul.definitions
-	-each word in words
-		li=word
+	for word in words
+		li
+			span=word
+			//select.chosen	
+			//for v in functions	
+				//option(value=v)=v
 script(src='/js/jquery-1.6.1.js')
 script(src='/js/css.js')
 script(src='/js/syntacticSearch.js')

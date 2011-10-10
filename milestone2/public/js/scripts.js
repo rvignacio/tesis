@@ -8,7 +8,7 @@
 			var p = $('p#file_text').hide(), matches = reader.result.match(/[a-zA-Z0-9áéíóú]+/g), result = reader.result.replace(/([a-zA-Z0-9áéíóú]+)/g,'{$1}');
 			matches.forEach(function(val, idx){
 				var word = val.toLowerCase();
-				search.call($('.syntacticSearch'),word,function(data){
+				$('.syntacticSearch').search(word,function(data){
 					var re = new RegExp('{'+word+'}','g'), title = data.join(', ').replace(/, ([^,]*)$/,' y $1');
 					if (title){
 						result = result.replace(re,'<span class="classified">'+word+' <span class="tooltip">'+title+'</span></span>');
@@ -33,6 +33,18 @@
 	 */
 	$('#indeterminadas ul','#listas').bind('contentChanged', function(){
 		$(this).find('li').addDefinitionSelect();
+	});
+
+	$('.chosen').live('change', function(){
+		var val = $(this).val(), li = $(this).closest('li'), word = li.find('span').text();
+		$.post('/words/assign','function='+val+'&word='+word, function(ret){
+			if (ret){
+				addToList(val,word);
+				li.fadeOut('slow', function(){
+					li.remove();
+				});	
+			}
+		});
 	});
 	
 })();
