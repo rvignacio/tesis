@@ -125,7 +125,7 @@ app.get('/words/assign', function(req, res){
 		res.render('list', {
 			title: 'Lista de palabras no encontradas',
 			words: words,
-			functions: ['',
+			functions: [
 					  'sustantivo',
 					  'verbo',
 					  'adjetivo',
