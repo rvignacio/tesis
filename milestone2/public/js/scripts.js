@@ -31,13 +31,16 @@
 	/* Evento para agregar un select a las palabras indeterminadas, se ejecuta cada vez que
 	 * se inserta una palabra a la lista de indeterminadas
 	 */
-	$('#indeterminadas ul','#listas').bind('contentChanged', function(){
+	$('#indeterminadas ul','#listas').on('contentChanged', function(){
 		$(this).find('li').addDefinitionSelect();
 	});
 
-	$('.chosen').live('change', function(){
-		var val = $(this).val(), li = $(this).closest('li'), word = li.find('span').text();
-		$.post('/words/assign','function='+val+'&word='+word, function(ret){
+	$('.add_new_word').live('click', function(){
+		var parent = $(this).parent(),
+			val = parent.find('.chosen').val(),
+			weight = parent.find('.weight').val(),
+			word = parent.find('span').text();
+		$.post('/words/assign','function='+val+'&word='+word+'&weight='+weight, function(ret){
 			if (ret){
 				addToList(val,word);
 				li.fadeOut('slow', function(){
@@ -45,6 +48,9 @@
 				});	
 			}
 		});
+		//end post
+		return false;
 	});
-	
+	//end live
+
 })();

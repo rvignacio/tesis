@@ -111,7 +111,7 @@ h3 {
 }
 
 .lista {
-	width: 200px;
+	width: 400px;
 	margin: 0px 20px;
 	padding: 10px 5px;
 	border-top: 1px solid #dddddd;
@@ -155,11 +155,25 @@ h3 {
 }
 
 .lista ul li {
-	width:180px;
+	width:300px;
 	margin: 5px 0px;;
 }
 
 .lista ul li select {
-	float: right;
+	display: inline;
+	font-size: 0.9em;
+	margin: 0 2px 0 4px;
+}
+
+.lista ul li input[type='number'] {
+	width: 20px;
+	display:inline;
+	font-size: 0.9em;
+	margin: 0 2px;
+}
+
+.lista ul li input[type='submit']{
+	display: inline;
+	margin: 0 2px;
 	font-size: 0.9em;
 }

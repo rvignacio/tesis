@@ -136,7 +136,7 @@ function addToList( value, word ){
 				wordEl = $this.find('.word');
 			
 			//delega la función search al evento click del botón
-			$this.find( '.search' ).click( function(){
+			$this.find( '.search' ).on('click', function(){
 				$this.search(wordEl.val());
 				return false;
 			});
@@ -161,6 +161,15 @@ function addToList( value, word ){
 			if($this.find('select').length === 0){
 				var	select = $('<select/>', {
 						'class': 'chosen'
+					}).appendTo($this),
+					inputPeso = $('<input/>',{
+						'class': 'weight',
+						type: 'number'
+					}).appendTo($this),
+					submit = $('<input/>', {
+						'class': 'add_new_word',
+						type: 'submit',
+						value: 'Enviar>>'
 					}).appendTo($this);
 
 				syntacticNames.forEach(function(def){
