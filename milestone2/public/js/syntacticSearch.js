@@ -65,37 +65,36 @@ function addToList( value, word ){
 		uls = [];
 
 	if( value === 'sustantivo'){
-		uls.push('#sustantivos ul');
+		uls.push('.sustantivos ul');
 	}
 	if( (value === 'verbo') || (value === 'verbo conjugado') ){
-		uls.push('#verbos ul');
+		uls.push('.verbos ul');
 	}
 
 	if( value === 'adjetivo' ){
-		uls.push('#adjetivos ul');
+		uls.push('.adjetivos ul');
 	}
 
 	if( value === 'artículo' ){
-		uls.push('#articulos ul');
+		uls.push('.articulos ul');
 	}
 
 	if( value === 'adverbio' ){
-		uls.push('#adverbios ul');
+		uls.push('.adverbios ul');
 	}
 
 	if( value === 'preposición' ){
-		uls.push('#preposiciones ul');
+		uls.push('.preposiciones ul');
 	}
 
 	if( value === 'conjunción' ){
-		uls.push('#conjunciones ul');
+		uls.push('.conjunciones ul');
 	}
 	if( value === 'pronombre' ){
-		uls.push('#pronombres ul');
+		uls.push('.pronombres ul');
 	}
 	if( value === null || value === ''){
-		//uls.push('#indeterminadas ul');
-		ul = $('#indeterminadas ul');
+		ul = $('.indeterminadas ul');
 		if (!ul.find('li').filter(function(){
 			return $(this).text() === word;
 		}).length){
@@ -108,7 +107,7 @@ function addToList( value, word ){
 	   /* Indica que cambió el contenido y debe agregarse un elemento select para
 		* permitir al usuario seleccionar la función sintáctica de la palabra
 		*/
-		$('#indeterminadas ul','#listas').trigger('contentChanged');
+		$('.indeterminadas ul','#listas').trigger('contentChanged');
 	}
 
 	uls.forEach(function(ul){

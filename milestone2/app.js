@@ -4,7 +4,7 @@
 var express = require('express'),
 	syntacticSearchService = require('./libs/syntacticSearchService'),
 	redis = require("redis"),
-	Step = require('step');
+	Step = require('step'),
 	util = require("util");
 
 var app = module.exports = express.createServer(),

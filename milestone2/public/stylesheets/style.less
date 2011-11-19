@@ -1,26 +1,41 @@
+/*ClearFix*/
+.clearfix:after {
+	content: ".";
+	display: block;
+	clear: both;
+	visibility: hidden;
+	line-height: 0;
+	height: 0;
+}
+ 
+.clearfix {
+	display: inline-block;
+}
+
 /* Estilos definidos anteriormente */
-body {
-  font: 13px Helvetica, Arial, sans-serif;
+body{
+	font: 13px Helvetica, Arial, sans-serif
 }
 
-a {
-  color: #00B7FF;
+a{
+	color: #00B7FF
 }
 
-p#file_text {
+p#file_text{
 	display: inline-block;
 	padding: 10px;
 }
 
-span.classified {
+span.classified{
 	text-decoration: underline;
 	position: relative;
 }
 
-span.tooltip {
+span.tooltip{
 	display:none;
 	position: absolute;
 }
+
 span:hover .tooltip{
 	display:block;
 	top:22px;
@@ -33,7 +48,6 @@ span:hover .tooltip{
 	z-index: 1;
 	font-weight: normal;
 }
-
 
 /*IRV - Definición de estilos - 14/08/2011 */
 body {
@@ -118,62 +132,94 @@ h3 {
 	border-bottom: 1px solid #aaaaaa;
 }
 
+section.txtArea{
+	height: 250px;
+	margin: 10px 0px;
+	padding: 5px 0px;
+	border-top: 1px solid #dddddd;
+
+	textarea{
+		width: 940px;
+		height: 220px;
+		resize: none;
+	}
+
+	input{
+		margin: 10px 15px;
+		padding: 5px;
+		display: block;
+		float: right;
+	}
+}
+
 /*Estilos para el plug-in syntacticSearch*/
 .syntacticSearch {
+	width: 100%;
 	height: 30px;
+	border-top: 1px solid #dddddd;
+
+	form {
+		width: 310px;
+		
+		input[type=button]{
+			float: right;
+		}
+	}
+
+	.definitions {
+		width: 250px;
+		padding-left: 40px;
+		position: relative;
+		top: -90px;
+		left: 340px;
+		-moz-box-shadow: 1px 1px 3px #888888;
+		-webkit-box-shadow: 1px 1px 3px #888888;
+		box-shadow: 1px 1px 3px #888888;
+		list-style-type: hiragana;
+	}
+
+	.definition {
+		min-height: 30px;
+		padding: 5px 0;	
+		line-height: 30px;
+		font-size: 1.2em;
+		color: #a5a5a5;
+		text-shadow: 0 -1px 0 #454545;
+	}
+
 }
 
-.syntacticSearch form {
-	width: 300px;
-}
+.lista {
+	ul {
+		margin: 5px 30px;
+		color: #696969;
+		list-style-type: georgian;
 
-.syntacticSearch .definitions {
-	width: 250px;
-	padding-left: 40px;
-	position: relative;
-	top: -90px;
-	left: 340px;
-	-moz-box-shadow: 1px 1px 3px #888888;
-	-webkit-box-shadow: 1px 1px 3px #888888;
-	box-shadow: 1px 1px 3px #888888;
-	list-style-type: hiragana;
-}
+		li {
+			width:300px;
+			margin: 5px 0px;
 
-.syntacticSearch .definition {
-	min-height: 30px;
-	padding: 5px 0;	
-	line-height: 30px;
-	font-size: 1.2em;
-	color: #a5a5a5;
-	text-shadow: 0 -1px 0 #454545;
-}
+			select {
+				display: inline;
+				font-size: 0.9em;
+				margin: 0 2px 0 4px;
+			}
 
-.lista ul {
-	margin: 5px 30px;
-	color: #696969;
-	list-style-type: georgian;
-}
+			input[type='number'] {
+				width: 20px;
+				display:inline;
+				font-size: 0.9em;
+				margin: 0 2px;
+			}
 
-.lista ul li {
-	width:300px;
-	margin: 5px 0px;;
+			input[type='submit']{
+				display: inline;
+				margin: 0 2px;
+				font-size: 0.9em;
+			}
+		}
+		//End li
+	}
+	//End ul
 }
-
-.lista ul li select {
-	display: inline;
-	font-size: 0.9em;
-	margin: 0 2px 0 4px;
-}
-
-.lista ul li input[type='number'] {
-	width: 20px;
-	display:inline;
-	font-size: 0.9em;
-	margin: 0 2px;
-}
-
-.lista ul li input[type='submit']{
-	display: inline;
-	margin: 0 2px;
-	font-size: 0.9em;
-}
+//End .lista

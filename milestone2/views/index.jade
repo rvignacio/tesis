@@ -1,46 +1,66 @@
 div#container
+
 	h1= title
 		span.arrow
+
 	h2 Cargue un archivo de texto:
 	input(type='file')
 	section
 		p#file_text
-	h2 o ingrese una palabra:
-	section.syntacticSearch
+	
+	section.syntacticSearch.clearfix
+		h2 Ingrese una palabra:
 		form
 			input.word( type='text' )
 			input.search( type='button', value='Buscar' )
 		ul.definitions
-	section#listas
+	
+	section.txtArea.clearfix
+		h2 O copie un texto:
+		textarea
+		input( type='button', value='Analizar' )
+
+	section#listas.tabs
 		h2 Palabras clasificadas:
-		div#sustantivos.lista
-			h3 Sustantivos:
+		ul
+			li.tabIndex
+				a( href='#tabs-1') Sustantivos
+			li.tabIndex
+				a( href='#tabs-2') Verbos
+			li.tabIndex
+				a( href='#tabs-3') Adjetivos
+			li.tabIndex
+				a( href='#tabs-4') Artículos
+			li.tabIndex
+				a( href='#tabs-5') Adverbios
+			li.tabIndex
+				a( href='#tabs-6') Preposiciones
+			li.tabIndex
+				a( href='#tabs-7') Conjunciones
+			li.tabIndex
+				a( href='#tabs-8') Pronombres
+			li.tabIndex
+				a( href='#tabs-9') No Encontradas
+		div#tabs-1.sustantivos.lista
 			ul
-		div#verbos.lista
-			h3 Verbos:
+		div#tabs-2.verbos.lista
 			ul
-		div#adjetivos.lista
-			h3 Adjetivos:
+		div#tabs-3.adjetivos.lista
 			ul
-		div#articulos.lista
-			h3 Artículos:
+		div#tabs-4.articulos.lista
 			ul
-		div#adverbios.lista
-			h3 Adverbios:
+		div#tabs-5.adverbios.lista
 			ul
-		div#preposiciones.lista
-			h3 Preposiciones:
+		div#tabs-6.preposiciones.lista
 			ul
-		div#conjunciones.lista
-			h3 Conjunciones:
+		div#tabs-7.conjunciones.lista
 			ul
-		div#pronombres.lista
-			h3 Pronombres:
+		div#tabs-8.pronombres.lista
 			ul
-		div#indeterminadas.lista
-			h3 Palabras no encontradas:
+		div#tabs-9.indeterminadas.lista
 			ul
 script(src='/js/jquery-1.7.js')
+script(src='/js/jquery-ui-1.8.16.custom.min.js')
 script(src='/js/css.js')
 script(src='/js/syntacticSearch.js')
 script(src='/js/scripts.js')
