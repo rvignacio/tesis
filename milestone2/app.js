@@ -101,9 +101,11 @@ app.get('/', function(req, res){
 });
 
 app.post('/words/assign', function(req, res){
-	var multi = recli.multi(), word = req.body.word, fn = req.body.function;
+	var multi = recli.multi(), word = req.body.word, fn = req.body.function, weight = req.body.weight;
 	multi.srem('function::words', word)
+	.del('word:'+word+':functions', fn)
 	.sadd('word:'+word+':functions', fn)
+	.sadd('word:'+word+':function:'+fn+':weight', weight)
 	.sadd('function:'+fn+':words', word)
 	.exec(function (err, replies){
 		if (err){

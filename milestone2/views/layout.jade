@@ -7,6 +7,12 @@ html
 		link( rel='stylesheet', href='/stylesheets/smoothness/jquery-ui-1.8.16.custom.css')
 		link( rel='stylesheet/less', href='/stylesheets/style.less')
 		script(src='/js/less-1.1.5.min.js')
-	body!= body
-	footer.clearfix
-		p.copyright &copy; 2011 - Martín Ciparelli / Ignacio Ríos Vazquez
+	body 
+		!= body
+		script(src='/js/jquery-1.7.js')
+		script(src='/js/jquery-ui-1.8.16.custom.min.js')
+		script(src='/js/css.js')
+		script(src='/js/syntacticSearch.js')
+		script(src='/js/scripts.js')
+		footer.clearfix
+			p.copyright &copy; 2011 - Martín Ciparelli / Ignacio Ríos Vazquez

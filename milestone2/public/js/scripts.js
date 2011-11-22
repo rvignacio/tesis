@@ -35,11 +35,11 @@
 		$(this).find('li').addDefinitionSelect();
 	});
 
-	$('.add_new_word').live('click', function(){
-		var parent = $(this).parent(),
-			val = parent.find('.chosen').val(),
-			weight = parent.find('.weight').val(),
-			word = parent.find('span').text();
+	$('.add_new_word').on('click', function(){
+		var li = $(this).closest('li'),
+			val = li.find('.chosen').val(),
+			weight = li.find('.weight').val(),
+			word = li.find('span').text();
 		$.post('/words/assign','function='+val+'&word='+word+'&weight='+weight, function(ret){
 			if (ret){
 				addToList(val,word);

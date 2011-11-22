@@ -5,11 +5,11 @@ div#container
 		for word in words
 			li
 				span=word
+				label Función Sintáctica
 				select.chosen
 					option(value='') -- seleccione --
 					for v in functions	
 						option(value=v)=v
-script(src='/js/jquery-1.6.1.js')
-script(src='/js/css.js')
-script(src='/js/syntacticSearch.js')
-script(src='/js/scripts.js')
+				label Peso
+				input.weight(type='range', name='weight[]', min='1', max='100', step='1', value='50')
+				input.add_new_word(type='button', value='Guardar')
