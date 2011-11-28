@@ -3,10 +3,9 @@
  */
 var express = require('express'),
 	syntacticSearchService = require('./libs/syntacticSearchService'),
-	redis = require("redis"),
+	redis = require('redis'),
 	Step = require('step'),
-	util = require("util"),
-	stylus = require('stylus');
+	util = require('util');
 
 var app = module.exports = express.createServer(),
 	recli = redis.createClient();
@@ -80,7 +79,6 @@ app.configure(function(){
 	app.use(app.router);
 	app.use(express.static(__dirname + '/public'));
 	app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
-	//app.use(stylus.middleware({src: __dirname + '/public', compile: function (str, path){return stylus(str).set('filename', path).set('compress', true).use(nib());  }}));
 });
 
 /*app.configure('development', function(){
