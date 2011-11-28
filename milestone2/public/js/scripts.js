@@ -27,6 +27,13 @@
 		}
 	});
 
+	/* Función del botón Analizar del textarea. Envía todo el texto pegado al server para que este lo separe y
+	 * devuelva etiquetado
+	 */
+	$('.txtArea input').on('click', function(){
+		var text = $('textarea','.txtArea').val();
+		//TODO enviar al server el texto completo...
+	});
 
 	/* Evento para agregar un select a las palabras indeterminadas, se ejecuta cada vez que
 	 * se inserta una palabra a la lista de indeterminadas
