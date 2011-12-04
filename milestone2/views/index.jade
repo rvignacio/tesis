@@ -1,20 +1,19 @@
 div#container
-
 	h1= title
 		span.arrow
-
-	h2 Cargue un archivo de texto:
-	input(type='file')
 	section
 		p#file_text
 	
 	section.syntacticSearch.clearfix
-		h2 Ingrese una palabra:
-		form
-			input.word( type='text' )
-			input.search( type='button', value='Buscar' )
+		//
+			h2 Ingrese una palabra:
+			form
+				input.word( type='text' )
+				input.search( type='button', value='Buscar' )
 		ul.definitions
-	
+	section
+		h2 Cargue un archivo de texto:
+		input(type='file')
 	section.txtArea.clearfix
 		h2 O copie un texto:
 		textarea

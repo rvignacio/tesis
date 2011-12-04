@@ -26,7 +26,9 @@ $.fn.searchSuccess = function(syntacticFunctions,word){
 						text : value
 					}).appendTo(definitions)
 					  .hide()
-					  .fadeIn(500);
+					  .fadeIn(500)
+					  .delay(2000)
+					  .fadeOut(500);
 					addToList( value, word );
 				});	
 			}else{
@@ -35,25 +37,44 @@ $.fn.searchSuccess = function(syntacticFunctions,word){
 					text : word+' no fue encontrada en el diccionario.'
 				}).appendTo(definitions)
 				  .hide()
-				  .fadeIn(500);
+				  .fadeIn(500)
+				  .delay(2000)
+				  .fadeOut(500);
 				addToList( null, word );
 			}
 }
 
+function showSearchResult(text){
+	var p = $('p#file_text').hide().html(''), h3 = p.append(text).fadeIn('slow').css('border','1px solid green').prev();
+	if (!h3.length){
+		h3 = $('<h3/>');
+	}
+	h3.html('Texto etiquetado: ').insertBefore(p);
+}
 
 /* Función que envía al server la consulta al servicio syntactiSearchService 
  * y procesa la respuesta
  */
-$.fn.search = function(word,cb) {
+$.fn.search = function(text) {
 	var $this = this;
-	var words = word.split(' ');
-	words.forEach(function(word){
-		$.get('/syntacticSearch','word='+word,function(data){
-			$this.searchSuccess(data,word);
-			if (typeof cb !== 'undefined'){
-				cb(data);
+	$.get('/syntacticSearch','text='+text,function(data){
+		var len = Object.keys(data).length;
+		text = decodeURIComponent(text).replace(/([a-zA-Z0-9áéíóú]+)/g,'{$1}');
+		for (word in data){
+			if (data.hasOwnProperty(word)){
+				var re = new RegExp('{'+word+'}','g'), title = data[word].join(', ').replace(/, ([^,]*)$/,' y $1');
+				if (title){
+					text = text.replace(re,'<span class="classified">'+word+' <span class="tooltip">'+title+'</span></span>');
+				}else{
+					text = text.replace(re,word);
+				}
+				len -= 1;
+				if (!len){
+					showSearchResult(text);
+				}
+				$this.searchSuccess(data[word], word);
 			}
-		});
+		}
 	});
 }
 //end of function search()

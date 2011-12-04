@@ -1,74 +1,11 @@
 /**
  * Module dependencies.
  */
-var express = require('express'),
-	syntacticSearchService = require('./libs/syntacticSearchService'),
-	redis = require('redis'),
-	Step = require('step'),
-	util = require('util');
 
-var app = module.exports = express.createServer(),
-	recli = redis.createClient();
+var express = require('express'), mws = require('./mws');
 
-recli.on("error", function (err) {
-    console.log("Error connecting to redis: "+err);
-});
-/*recli.monitor(function (err, res) {
-    console.log("Entering monitoring mode.");
-});
+var app = module.exports = express.createServer();
 
-recli.on("monitor", function (time, args) {
-    console.log(time + ": " + util.inspect(args));
-});*/
-
-var search = function(req, res, next){
-	var word = req.query.word;
-	if (word) {
-		recli.smembers('word:'+word+':functions', function(err, data){
-			if (err){
-				next(new Error('error when looking up for \''+word+'\' functions locally: '+err));
-			}else if (data[0]){
-				req.data = data;
-				console.log('functions from \''+word+'\' found locally');
-				next();	
-			}else{
-				syntacticSearchService.search(word, function(err, funcs){
-					if (err){
-						next(new Error('error when looking up for \''+word+'\' functions remotely: '+err));	
-					}else{
-						var multi = recli.multi();
-						Step(function addWord(){
-							multi.sadd('words', word);	
-							return this.parallel();
-						}, function addWordFunctions(){
-							if (funcs[0]){
-								multi.sadd('word:'+word+':functions', funcs);	
-							}
-							return this.parallel();
-						}, function addWordToFunctions(){
-							var group = this.group();
-							funcs.forEach(function(func){
-								multi.sadd('function:'+func+':words', word);
-								group()();
-							});
-						}, function goNext(err){
-							if (err){
-								multi.discard();
-								next(new Error('error when adding \''+word+'\' data: '+err));
-							}
-							multi.exec();
-							req.data = funcs;
-							console.log('functions from \''+word+'\' found remotely');
-							next();
-						});
-					}
-				});	
-			}
-		});
-	}else{
-		next(new Error('no word received'));
-	}
-}
 // Configuration
 
 app.configure(function(){
@@ -97,52 +34,27 @@ app.get('/', function(req, res){
 		title: 'Evaluación de funciones sintácticas'
 	});
 });
-
-app.post('/words/assign', function(req, res){
-	var multi = recli.multi(), word = req.body.word, fn = req.body.function, weight = req.body.weight;
-	multi.srem('function::words', word)
-	.del('word:'+word+':functions', fn)
-	.sadd('word:'+word+':functions', fn)
-	.sadd('word:'+word+':function:'+fn+':weight', weight)
-	.sadd('function:'+fn+':words', word)
-	.exec(function (err, replies){
-		if (err){
-			console.log(err);
-			res.send('');
-		}
-		res.send('1');
-	});
-});
-
-/* controlador que busca la funci?n sint?ctica de
- * una palabra en el servicio web 
- */
-app.get('/words/assign', function(req, res){
-
-	recli.smembers('function::words', function(err, words){
-		if (err){
-			throw new Error('error when trying to get words');
-			return;
-		}
-		res.render('list', {
-			title: 'Lista de palabras no encontradas',
-			words: words,
-			functions: [
-					  'sustantivo',
-					  'verbo',
-					  'adjetivo',
-					  'artículo',
-					  'adverbio',
-					  'preposición',
-					  'conjunción',
-					  'pronombre']
-		});
-	});
-});
-app.get('/syntacticSearch',search,function(req, res){
+app.post('/words/assign', mws.assignDataToWord, function(req, res){
 	res.send(req.data);
 });
-
+app.get('/words/assign', mws.getUnfound, function(req, res){
+	res.render('list', {
+		title: 'Lista de palabras no encontradas',
+		words: req.words,
+		functions: [
+				  'sustantivo',
+				  'verbo',
+				  'adjetivo',
+				  'artículo',
+				  'adverbio',
+				  'preposición',
+				  'conjunción',
+				  'pronombre']
+	});
+});
+app.get('/syntacticSearch',mws.searchFunctions, function(req, res){
+	res.send(req.funcs);
+});
 
 // Only listen on $ node app.js
 if (!module.parent) {
