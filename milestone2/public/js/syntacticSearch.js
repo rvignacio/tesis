@@ -57,9 +57,9 @@ function showSearchResult(text){
  */
 $.fn.search = function(text) {
 	var $this = this;
-	$.get('/syntacticSearch','text='+text,function(data){
+	$.get('/syntacticSearch','text='+encodeURIComponent(text),function(data){
 		var len = Object.keys(data).length;
-		text = decodeURIComponent(text).replace(/([a-zA-Z0-9áéíóú]+)/g,'{$1}');
+		text = text.replace(/([a-zA-Z0-9áéíóú]+)/g,'{$1}');
 		for (word in data){
 			if (data.hasOwnProperty(word)){
 				var re = new RegExp('{'+word+'}','g'), title = data[word].join(', ').replace(/, ([^,]*)$/,' y $1');

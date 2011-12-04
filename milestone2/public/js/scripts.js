@@ -13,7 +13,7 @@
 	 * devuelva etiquetado
 	 */
 	$('.txtArea :button').on('click', function(){
-		var text = encodeURIComponent($(this).closest('.txtArea').find('textarea').val());
+		var text = $(this).closest('.txtArea').find('textarea').val();
 		$('.syntacticSearch').search(text);
 	});
 
