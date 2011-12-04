@@ -20,11 +20,11 @@
 	/* Evento para agregar un select a las palabras indeterminadas, se ejecuta cada vez que
 	 * se inserta una palabra a la lista de indeterminadas
 	 */
-	$('#indeterminadas ul','#listas').on('contentChanged', function(){
+	$('.indeterminadas ul','#listas').on('contentChanged', function(){
 		$(this).find('li').addDefinitionSelect();
 	});
 
-	$('.add_new_word').on('click', function(){
+	$('.indeterminadas ul','#listas').on('click', '.add_new_word',function(){
 		var li = $(this).closest('li'),
 			val = li.find('.chosen').val(),
 			weight = li.find('.weight').val(),
