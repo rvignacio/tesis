@@ -116,34 +116,50 @@ function addToList( value, word ){
 	}
 	if( value === null || value === ''){
 		ul = $('.indeterminadas ul');
-		if (!ul.find('li').filter(function(){
+		var span = ul.find('li span.word').filter(function(){
 			return $(this).text() === word;
-		}).length){
+		});
+
+		if(!span.length ){
+			//Agrega una palabra nueva a la lista
 			$('<li>',{
-				html: '<span>'+word+'</span>'
+				html: '<span class="word">'+word+'</span> <span class="counter">1</span>'
 			}).appendTo(ul)
 			  .hide()
 			  .fadeIn(speed);
+		   /* Indica que cambió el contenido y debe agregarse un elemento select para
+			* permitir al usuario seleccionar la función sintáctica de la palabra
+			*/
+			$('.indeterminadas ul','#listas').trigger('contentChanged');
 		}
-	   /* Indica que cambió el contenido y debe agregarse un elemento select para
-		* permitir al usuario seleccionar la función sintáctica de la palabra
-		*/
-		$('.indeterminadas ul','#listas').trigger('contentChanged');
+		else{
+			//Suma 1 aparición más de esa palabra en el texto
+			var counter = span.next('.counter');
+			counter.text(parseInt(counter.text())+1);
+		}
 	}
 
 	uls.forEach(function(ul){
 		ul = $(ul);
-		if (!ul.find('li').filter(function(){
+		var span = ul.find('li span.word').filter(function(){
 			return $(this).text() === word;
-		}).length){
+		});
+
+		if (!span.length){
+			//Agrega una palabra nueva a la lista, junto con el contador
 			$('<li>',{
-				text: word
+				html: '<span class="word">'+word+'</span> <span class="counter">1</span>'
 			}).appendTo(ul)
 			  .hide()
 			  .fadeIn(speed);
 		}
+		else{
+			//Suma 1 aparición más de esa palabra en el texto
+			var counter = span.next('.counter');
+			counter.text(parseInt(counter.text())+1);
+		}
 	});
-	
+
 }
 //end of function addToList()
 
