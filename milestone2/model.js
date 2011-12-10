@@ -18,12 +18,30 @@ recli.on("monitor", function (time, args) {
     console.log(time + ": " + util.inspect(args));
 });*/
 var model = module.exports = {
+	addWeightToFunctions: function(word, funcs, next){
+		var len = funcs.length, ret = [];
+		funcs.forEach(function(func, idx){
+			var over = idx === len-1;
+			recli.get('word:'+word+':function:'+func+':weight', function (err, weight){
+				if (err){
+					next(new Error('error when trying to get weight for function \''+func+'\' in word \''+word+'\''));
+				}
+				ret.push({
+					'fn': func,
+					'weight': weight
+				});
+				if (over){
+					next(null, ret);
+				}
+			});
+		});
+	},
 	assignDataToWord: function(word, data, next){
 		var multi = recli.multi();
 		multi.srem('function::words', word)
 		.del('word:'+word+':functions', data.fn)
 		.sadd('word:'+word+':functions', data.fn)
-		.sadd('word:'+word+':function:'+data.fn+':weight', data.weight)
+		.set('word:'+word+':function:'+data.fn+':weight', data.weight)
 		.sadd('function:'+data.fn+':words', word)
 		.exec(next);
 	},
@@ -38,11 +56,16 @@ var model = module.exports = {
 					if (err){
 						next(err);
 					}
-					matches[word] = funcs;
-					var over = Object.keys(matches).length === words_len;
-					if (over){
-						next(null, matches);
-					}
+					model.addWeightToFunctions(word, funcs, function(err, funcs){
+						if (err){
+							next(err);
+						}
+						matches[word] = funcs;
+						var over = Object.keys(matches).length === words_len;
+						if (over){
+							next(null, matches);
+						}
+					});
 				});	
 			});
 		}else{
@@ -54,7 +77,7 @@ var model = module.exports = {
 			if (err){
 				next(new Error('error when looking up for \''+word+'\' functions locally: '+err));
 			}else if (data[0]){
-				console.log('functions from \''+word+'\' found locally');
+				console.log('functions from \''+word+'\' found locally: '+data);
 				next(null, data);	
 			}else{
 				syntacticSearchService.search(word, function(err, funcs){
@@ -70,10 +93,11 @@ var model = module.exports = {
 								multi.sadd('word:'+word+':functions', funcs);	
 							}
 							return this.parallel();
-						}, function addWordToFunctions(){
+						}, function addWordAndWeightToFunctions(){
 							var group = this.group();
 							funcs.forEach(function(func){
 								multi.sadd('function:'+func+':words', word);
+								multi.set('word:'+word+':function:'+func+':weight', 50);
 								group()();
 							});
 						}, function goNext(err){

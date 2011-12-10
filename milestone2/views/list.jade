@@ -1,10 +1,10 @@
-div#container
+div#container.indeterminadas
 	h1= title
 		span.arrow
 	ul.definitions
 		for word in words
 			li
-				span=word
+				span.word=word
 				label Función Sintáctica
 				select.chosen
 					option(value='') -- seleccione --

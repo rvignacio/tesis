@@ -24,11 +24,11 @@
 		$(this).find('li').addDefinitionSelect();
 	});
 
-	$('.indeterminadas ul','#listas').on('click', '.add_new_word',function(){
+	$('.indeterminadas ul').on('click', '.add_new_word',function(){
 		var li = $(this).closest('li'),
 			val = li.find('.chosen').val(),
 			weight = li.find('.weight').val(),
-			word = li.find('span').text();
+			word = li.find('span.word').text();
 		$.post('/words/assign','function='+val+'&word='+word+'&weight='+weight, function(ret){
 			if (ret){
 				addToList(val,word);

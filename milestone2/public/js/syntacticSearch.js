@@ -20,16 +20,16 @@ $.fn.searchSuccess = function(syntacticFunctions,word){
 		 */
 			var definitions = this.find( '.definitions' ).html('');
 			if (syntacticFunctions[0]){
-				$.each(syntacticFunctions, function(index, value){
+				$.each(syntacticFunctions, function(index, obj){
 					$('<li>',{
 						'class' : 'definition',
-						text : value
+						text : obj.fn
 					}).appendTo(definitions)
 					  .hide()
 					  .fadeIn(500)
 					  .delay(2000)
 					  .fadeOut(500);
-					addToList( value, word );
+					addToList( obj.fn, word );
 				});	
 			}else{
 				$('<li>',{
@@ -62,7 +62,9 @@ $.fn.search = function(text) {
 		text = text.replace(/([a-zA-Z0-9áéíóú]+)/g,'{$1}');
 		for (word in data){
 			if (data.hasOwnProperty(word)){
-				var re = new RegExp('{'+word+'}','g'), title = data[word].join(', ').replace(/, ([^,]*)$/,' y $1');
+				var re = new RegExp('{'+word+'}','g'), title = data[word].map(function(obj){
+					return obj.fn + '(' + obj.weight + ')';
+				}).join(', ').replace(/, ([^,]*)$/,' y $1');
 				if (title){
 					text = text.replace(re,'<span class="classified">'+word+' <span class="tooltip">'+title+'</span></span>');
 				}else{
