@@ -202,8 +202,11 @@ function addToList( value, word ){
 					}).appendTo($this),
 					inputPeso = $('<input/>',{
 						'class': 'weight',
-						type: 'number',
-						value: '50'
+						type: 'range',
+						value: '50',
+						min: '1',
+						max: '100',
+						step: '1'
 					}).appendTo($this),
 					submit = $('<input/>', {
 						'class': 'add_new_word',
