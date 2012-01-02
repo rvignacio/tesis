@@ -9,7 +9,7 @@ var syntacticNames = ['',
 					  'conjunción',
 					  'pronombre'];
 
-$.fn.searchSuccess = function(syntacticFunctions,word){
+$.fn.searchSuccess = function(syntacticFunctions, word, appearances){
 		/* result es un array con las funciones sintácticas de 
 		 * la palabra consultada, hay que mostrar todos los valores
 		 * que contiene.
@@ -29,7 +29,7 @@ $.fn.searchSuccess = function(syntacticFunctions,word){
 					  .fadeIn(500)
 					  .delay(2000)
 					  .fadeOut(500);
-					addToList( obj.fn, word );
+					addToList( obj, word, appearances );
 				});	
 			}else{
 				$('<li>',{
@@ -40,7 +40,7 @@ $.fn.searchSuccess = function(syntacticFunctions,word){
 				  .fadeIn(500)
 				  .delay(2000)
 				  .fadeOut(500);
-				addToList( null, word );
+				addToList( null, word, appearances );
 			}
 }
 
@@ -58,12 +58,16 @@ function showSearchResult(text){
 $.fn.search = function(text) {
 	var $this = this;
 	$.get('/syntacticSearch','text='+encodeURIComponent(text),function(data){
-		var len = Object.keys(data).length;
+		var funcs = data.funcs, counts = data.counts, len = Object.keys(funcs).length;
 		text = text.replace(/([a-zA-Z0-9áéíóú]+)/g,'{$1}');
-		for (word in data){
-			if (data.hasOwnProperty(word)){
-				var re = new RegExp('{'+word+'}','g'), title = data[word].map(function(obj){
-					return obj.fn + '(' + obj.weight + ')';
+		for (word in funcs){
+			if (funcs.hasOwnProperty(word)){
+				var re = new RegExp('{'+word+'}','g'), appearances = counts[word], title = funcs[word].map(function(obj){
+					if (obj.fn){
+						return obj.fn + ' (' + obj.weight + ')';
+					}else{
+						return 'no encontrada';
+					}
 				}).join(', ').replace(/, ([^,]*)$/,' y $1');
 				if (title){
 					text = text.replace(re,'<span class="classified">'+word+' <span class="tooltip">'+title+'</span></span>');
@@ -74,7 +78,7 @@ $.fn.search = function(text) {
 				if (!len){
 					showSearchResult(text);
 				}
-				$this.searchSuccess(data[word], word);
+				$this.searchSuccess(funcs[word], word, appearances);
 			}
 		}
 	});
@@ -82,86 +86,54 @@ $.fn.search = function(text) {
 //end of function search()
 
 
-function addToList( value, word ){
-	
-	var speed = 500,
-		uls = [];
-
-	if( value === 'sustantivo'){
-		uls.push('.sustantivos ul');
+function addToList( obj, word, appearances ){
+	var speed = 500, ul, value = obj.fn;
+	switch (value){
+		case 'sustantivo':
+			ul = $('.sustantivos ul');
+			break;
+		case 'verbo':
+		case 'verbo conjugado':
+			ul = $('.verbos ul');
+			break;
+		case 'adjetivo':
+			ul = $('.adjetivos ul');
+			break;
+		case 'artículo':
+			ul = $('.articulos ul');
+			break;
+		case 'adverbio':
+			ul = $('.adverbios ul');
+			break;
+		case 'preposición':
+			ul = $('.preposiciones ul');
+			break;
+		case 'conjunción':
+			ul = $('.conjunciones ul');
+			break;
+		case 'pronombre':
+			ul = $('.pronombres ul');
+			break;
+		default:
+			ul = $('.indeterminadas ul');
+			break;
 	}
-	if( (value === 'verbo') || (value === 'verbo conjugado') ){
-		uls.push('.verbos ul');
-	}
-
-	if( value === 'adjetivo' ){
-		uls.push('.adjetivos ul');
-	}
-
-	if( value === 'artículo' ){
-		uls.push('.articulos ul');
-	}
-
-	if( value === 'adverbio' ){
-		uls.push('.adverbios ul');
-	}
-
-	if( value === 'preposición' ){
-		uls.push('.preposiciones ul');
-	}
-
-	if( value === 'conjunción' ){
-		uls.push('.conjunciones ul');
-	}
-	if( value === 'pronombre' ){
-		uls.push('.pronombres ul');
-	}
-	if( value === null || value === ''){
-		ul = $('.indeterminadas ul');
-		var span = ul.find('li span.word').filter(function(){
-			return $(this).text() === word;
-		});
-
-		if(!span.length ){
-			//Agrega una palabra nueva a la lista
-			$('<li>',{
-				html: '<span class="word">'+word+'</span> <span class="counter">1</span>'
-			}).appendTo(ul)
-			  .hide()
-			  .fadeIn(speed);
-		   /* Indica que cambió el contenido y debe agregarse un elemento select para
-			* permitir al usuario seleccionar la función sintáctica de la palabra
-			*/
-			$('.indeterminadas ul','#listas').trigger('contentChanged');
-		}
-		else{
-			//Suma 1 aparición más de esa palabra en el texto
-			var counter = span.next('.counter');
-			counter.text(parseInt(counter.text())+1);
-		}
-	}
-
-	uls.forEach(function(ul){
-		ul = $(ul);
-		var span = ul.find('li span.word').filter(function(){
-			return $(this).text() === word;
-		});
-
-		if (!span.length){
-			//Agrega una palabra nueva a la lista, junto con el contador
-			$('<li>',{
-				html: '<span class="word">'+word+'</span> <span class="counter">1</span>'
-			}).appendTo(ul)
-			  .hide()
-			  .fadeIn(speed);
-		}
-		else{
-			//Suma 1 aparición más de esa palabra en el texto
-			var counter = span.next('.counter');
-			counter.text(parseInt(counter.text())+1);
-		}
+	var span = ul.find('li span.word').filter(function(){
+		return $(this).text() === word;
 	});
-
+	if (!span.length){
+		//Agrega una palabra nueva a la lista, junto con el contador
+		$('<li>',{
+			html: '<span class="word">'+word+'</span> <span class="counter">'+appearances+'</span>'
+		}).appendTo(ul)
+		  .hide()
+		  .data('info', obj)
+		  .fadeIn(speed).trigger('contentChanged');
+	}else{
+		//Suma 1 aparición más de esa palabra en el texto
+		var counter = span.next('.counter');
+		counter.text(parseInt(counter.text())+1);
+	}
 }
 //end of function addToList()
 
@@ -192,36 +164,39 @@ function addToList( value, word ){
 	$.fn.addDefinitionSelect = function(){
 
 		return this.each(function(){
-
 			//cache this
-			var $this = $(this);
-
-			if($this.find('select').length === 0){
+			var $this = $(this), info = $this.data('info');
+			if(!$this.find('select').length && info){
 				var	select = $('<select/>', {
-						'class': 'chosen'
-					}).appendTo($this),
-					inputPeso = $('<input/>',{
-						'class': 'weight',
-						type: 'range',
-						value: '50',
-						min: '1',
-						max: '100',
-						step: '1'
-					}).appendTo($this),
-					submit = $('<input/>', {
-						'class': 'add_new_word',
-						type: 'submit',
-						value: 'Enviar>>'
-					}).appendTo($this);
-
-				syntacticNames.forEach(function(def){
-					$('<option>',{
-						value: def,
-						text: def || 'elija una función'
-					}).appendTo(select);
-
+					'class': 'chosen'
+				}),
+				inputPeso = $('<input/>',{
+					'class': 'weight',
+					type: 'range',
+					value: info.weight || '50',
+					min: '1',
+					max: '100',
+					step: '1'
+				}),
+				submit = $('<input/>', {
+					'class': 'add_new_word',
+					type: 'submit',
+					value: 'Enviar>>'
 				});
-				//end of forEach
+				if (!info.fn){
+					$this.append(select).append(inputPeso);
+					syntacticNames.forEach(function(def, idx){
+						$('<option>',{
+							value: def,
+							text: def || 'elija una función'/*,
+							selected: $this.index() === idx*/
+						}).appendTo(select);
+					}); //end of forEach
+					$this.append(submit);
+				}else{
+					inputPeso.appendTo($this).show();
+					submit.appendTo($this).show();
+				}
 			}
 			//end of if
 

@@ -1,14 +1,17 @@
 var model = require('./model');
 module.exports = {
 	assignDataToWord: function(req, res, next){
-		var word = req.body.word, fn = req.body.function, weight = req.body.weight;
+		var word = req.body.word, newFn = req.body.newFn, oldFn = req.body.oldFn, weight = req.body.weight;
 		model.assignDataToWord(word, {
-			fn: fn,
+			newFn: newFn,
+			oldFn: oldFn,
 			weight: weight
 		},function (err, replies){
 			if (err){
 				next(err);
+				console.log('ERROR: couldn\'t assign data to \''+ word + '\'');
 			}
+			console.log('data assigned properly to \''+ word + '\'');
 			req.data = '1';
 			next();
 		});
@@ -24,11 +27,12 @@ module.exports = {
 	},
 	searchFunctions: function(req, res, next){
 		var text = req.query.text;
-		model.searchFunctions(text, function(err, funcs){
+		model.searchFunctions(text, function(err, data){
 			if (err){
 				next(err);
 			}
-			req.funcs = funcs;
+			console.log('functions found');
+			req.data = data;
 			next();
 		});
 	}

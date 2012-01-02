@@ -15,30 +15,48 @@
 	$('.txtArea :button').on('click', function(){
 		var text = $(this).closest('.txtArea').find('textarea').val();
 		$('.syntacticSearch').search(text);
+		$('.lista li').remove();
 	});
 
 	/* Evento para agregar un select a las palabras indeterminadas, se ejecuta cada vez que
 	 * se inserta una palabra a la lista de indeterminadas
 	 */
-	$('.indeterminadas ul','#listas').on('contentChanged', function(){
-		$(this).find('li').addDefinitionSelect();
-	});
-
-	$('.indeterminadas ul').on('click', '.add_new_word',function(){
-		var li = $(this).closest('li'),
-			val = li.find('.chosen').val(),
+	$('#listas')
+	.on('contentChanged', 'li', function(){
+		$(this).addDefinitionSelect();
+	})
+	.on('click', '.add_new_word',function(){
+		var el = $(this), li = el.closest('li'),
+			oldFn = li.data('info').fn,
+			newFn = li.find('.chosen').val(),
 			weight = li.find('.weight').val(),
-			word = li.find('span.word').text();
-		$.post('/words/assign','function='+val+'&word='+word+'&weight='+weight, function(ret){
+			word = li.find('span.word').text(),
+			btnText = el.val();
+		el.attr('disabled', 'disabled').val('Enviando...');
+		$.post('/words/assign','oldFn='+oldFn+'&newFn='+(newFn || oldFn)+'&word='+word+'&weight='+weight, function(ret){
 			if (ret){
-				addToList(val,word);
-				li.fadeOut('slow', function(){
-					li.remove();
-				});	
+				el.removeAttr('disabled').val(btnText);
+				if (newFn){
+					addToList({
+						fn: newFn,
+						weight: weight
+					}, word);
+					li.fadeOut('slow', function(){
+						li.remove();
+					});	
+				}
 			}
 		});
 		//end post
 		return false;
+	});
+	$('.lista').on('change', 'select.chosen', function(){
+		var el = $(this), nextEls = el.nextAll(), speed = 'fast';
+		if (el.val()){
+			nextEls.show(speed);
+		}else{
+			nextEls.hide(speed);
+		}
 	});
 	//end live
 })();

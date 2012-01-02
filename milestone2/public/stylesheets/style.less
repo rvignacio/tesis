@@ -200,13 +200,18 @@ section.txtArea{
 			list-style-type: georgian;
 
 			li {
-				width:300px;
+				width: 400px;
 				margin: 5px 0px;
 
 				select {
 					display: inline;
 					font-size: 0.9em;
 					margin: 0 2px 0 4px;
+				}
+
+				.word {
+					width: 150px;	
+					background: yellow;
 				}
 
 				input[type='number'] {
@@ -217,9 +222,12 @@ section.txtArea{
 				}
 
 				input[type='submit']{
-					display: inline;
+					display: none;
 					margin: 0 2px;
 					font-size: 0.9em;
+				}
+				input.weight{
+					display: none;	
 				}
 			}
 			//End li

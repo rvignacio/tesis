@@ -38,18 +38,18 @@ var model = module.exports = {
 	},
 	assignDataToWord: function(word, data, next){
 		var multi = recli.multi();
-		multi.srem('function::words', word)
-		.del('word:'+word+':functions', data.fn)
-		.sadd('word:'+word+':functions', data.fn)
-		.set('word:'+word+':function:'+data.fn+':weight', data.weight)
-		.sadd('function:'+data.fn+':words', word)
+		multi.srem('function:'+data.oldFn+':words', word)
+		.del('word:'+word+':functions', data.oldFn)
+		.sadd('word:'+word+':functions', data.newFn)
+		.set('word:'+word+':function:'+data.newFn+':weight', data.weight)
+		.sadd('function:'+data.newFn+':words', word)
 		.exec(next);
 	},
 	getUnfound: function(next){
 		recli.smembers('function::words', next);
 	},
 	searchFunctions: function(text, next){
-		var words = text.match(/[a-zA-Z0-9áéíóú]+/g), matches = {}, words_len = words.length;
+		var words = text.match(/[a-zA-Z0-9áéíóú]+/g), matches = {}, words_len = words.length, counts = {};
 		if (words) {
 			words.forEach(function(word, key){
 				model.searchWordFunctions(word, function(err, funcs){
@@ -61,9 +61,14 @@ var model = module.exports = {
 							next(err);
 						}
 						matches[word] = funcs;
-						var over = Object.keys(matches).length === words_len;
+						counts[word] = (counts[word] || 0) + 1;
+						words_len -= 1;
+						var over = !words_len;
 						if (over){
-							next(null, matches);
+							next(null, {
+								'funcs': matches,
+								'counts': counts
+							});
 						}
 					});
 				});	

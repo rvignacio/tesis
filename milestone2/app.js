@@ -53,7 +53,7 @@ app.get('/words/assign', mws.getUnfound, function(req, res){
 	});
 });
 app.get('/syntacticSearch',mws.searchFunctions, function(req, res){
-	res.send(req.funcs);
+	res.send(req.data);
 });
 
 // Only listen on $ node app.js
