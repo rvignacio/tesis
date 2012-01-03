@@ -1,5 +1,5 @@
 //Definiciones de las distintas funciones sintácticas
-var syntacticNames = ['',
+var syntacticNames = [
 					  'sustantivo',
 					  'verbo',
 					  'adjetivo',
@@ -7,7 +7,8 @@ var syntacticNames = ['',
 					  'adverbio',
 					  'preposición',
 					  'conjunción',
-					  'pronombre'];
+					  'pronombre',
+					  ''];
 
 $.fn.searchSuccess = function(syntacticFunctions, word, appearances){
 		/* result es un array con las funciones sintácticas de 
@@ -43,13 +44,17 @@ $.fn.searchSuccess = function(syntacticFunctions, word, appearances){
 				addToList( null, word, appearances );
 			}
 }
-
+$('#listas > ul > li > a').bind('click', function(){
+	var fn = syntacticNames[$('li.ui-state-active').index()] || 'encontrada';
+	$('span.classified').fadeTo('fast', 0.2).filter('[data-fn~='+fn+']').fadeTo('fast', 1);
+});
 function showSearchResult(text){
 	var p = $('p#file_text').hide().html(''), h3 = p.append(text).fadeIn('slow').css('border','1px solid green').prev();
 	if (!h3.length){
 		h3 = $('<h3/>');
 	}
 	h3.html('Texto etiquetado: ').insertBefore(p);
+	$('#listas li.ui-state-active a').trigger('click');
 }
 
 /* Función que envía al server la consulta al servicio syntactiSearchService 
@@ -70,7 +75,7 @@ $.fn.search = function(text) {
 					}
 				}).join(', ').replace(/, ([^,]*)$/,' y $1');
 				if (title){
-					text = text.replace(re,'<span class="classified">'+word+' <span class="tooltip">'+title+'</span></span>');
+					text = text.replace(re,'<span class="classified" data-fn="'+title+'">'+word+' <span class="tooltip">'+title+'</span></span>');
 				}else{
 					text = text.replace(re,word);
 				}
