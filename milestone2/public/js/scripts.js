@@ -31,6 +31,7 @@
 			newFn = li.find('.chosen').val(),
 			weight = li.find('.weight').val(),
 			word = li.find('span.word').text(),
+			appearances = li.find('.counter').text(),
 			btnText = el.val();
 		el.attr('disabled', 'disabled').val('Enviando...');
 		$.post('/words/assign','oldFn='+oldFn+'&newFn='+(newFn || oldFn)+'&word='+word+'&weight='+weight, function(ret){
@@ -40,10 +41,10 @@
 					addToList({
 						fn: newFn,
 						weight: weight
-					}, word);
+					}, word, appearances);
 					li.fadeOut('slow', function(){
 						li.remove();
-					});	
+					});
 				}
 			}
 		});

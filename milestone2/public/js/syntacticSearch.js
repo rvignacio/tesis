@@ -1,6 +1,5 @@
 //Definiciones de las distintas funciones sintácticas
-var syntacticNames = [
-					  'sustantivo',
+var syntacticNames = ['sustantivo',
 					  'verbo',
 					  'adjetivo',
 					  'artículo',
@@ -129,7 +128,7 @@ function addToList( obj, word, appearances ){
 	if (!span.length){
 		//Agrega una palabra nueva a la lista, junto con el contador
 		$('<li>',{
-			html: '<span class="word">'+word+'</span> <span class="counter">'+appearances+'</span>'
+			html: '<span class="word">'+word+'</span> <span class="counter">'+(appearances || 1)+'</span>'
 		}).appendTo(ul)
 		  .hide()
 		  .data('info', obj)
@@ -190,7 +189,10 @@ function addToList( obj, word, appearances ){
 				});
 				if (!info.fn){
 					$this.append(select).append(inputPeso);
-					syntacticNames.forEach(function(def, idx){
+					var names = syntacticNames.slice();
+					names.pop();
+					names.unshift('');
+					names.forEach(function(def, idx){
 						$('<option>',{
 							value: def,
 							text: def || 'elija una función'/*,

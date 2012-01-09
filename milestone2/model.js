@@ -39,7 +39,7 @@ var model = module.exports = {
 	assignDataToWord: function(word, data, next){
 		var multi = recli.multi();
 		multi.srem('function:'+data.oldFn+':words', word)
-		.del('word:'+word+':functions', data.oldFn)
+		.srem('word:'+word+':functions', data.oldFn)
 		.sadd('word:'+word+':functions', data.newFn)
 		.set('word:'+word+':function:'+data.newFn+':weight', data.weight)
 		.sadd('function:'+data.newFn+':words', word)
