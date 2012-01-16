@@ -6,9 +6,8 @@
 		reader.readAsText(this.files[0]);
 		reader.onload = function(){
 			$('.syntacticSearch').search(reader.result);
-		}
+		};
 	});
-
 	/* Función del botón Analizar del textarea. Envía todo el texto pegado al server para que este lo separe y
 	 * devuelva etiquetado
 	 */

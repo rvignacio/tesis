@@ -49,7 +49,8 @@ var model = module.exports = {
 		recli.smembers('function::words', next);
 	},
 	searchFunctions: function(text, next){
-		var words = text.match(/[a-zA-Z0-9áéíóú]+/g), matches = {}, words_len = words.length, counts = {};
+		//var words = text.match(/[a-zA-Z0-9áéíóú]+/g), matches = {}, words_len = words.length, counts = {};
+		var words = text.match(/[a-zA-Záéíóú]+/g), matches = {}, words_len = words.length, counts = {};
 		if (words) {
 			words.forEach(function(word, key){
 				model.searchWordFunctions(word, function(err, funcs){
@@ -63,6 +64,7 @@ var model = module.exports = {
 						matches[word] = funcs;
 						counts[word] = (counts[word] || 0) + 1;
 						words_len -= 1;
+						console.log('words remaining: ' + words_len);
 						var over = !words_len;
 						if (over){
 							next(null, {
@@ -71,7 +73,7 @@ var model = module.exports = {
 							});
 						}
 					});
-				});	
+				});
 			});
 		}else{
 			next(new Error('no words received'));
@@ -83,19 +85,19 @@ var model = module.exports = {
 				next(new Error('error when looking up for \''+word+'\' functions locally: '+err));
 			}else if (data[0]){
 				console.log('functions from \''+word+'\' found locally: '+data);
-				next(null, data);	
+				next(null, data);
 			}else{
 				syntacticSearchService.search(word, function(err, funcs){
 					if (err){
-						next(new Error('error when looking up for \''+word+'\' functions remotely: '+err));	
+						next(new Error('error when looking up for \''+word+'\' functions remotely: '+err));
 					}else{
 						var multi = recli.multi();
 						Step(function addWord(){
-							multi.sadd('words', word);	
+							multi.sadd('words', word);
 							return this.parallel();
 						}, function addWordFunctions(){
 							if (funcs[0]){
-								multi.sadd('word:'+word+':functions', funcs);	
+								multi.sadd('word:'+word+':functions', funcs);
 							}
 							return this.parallel();
 						}, function addWordAndWeightToFunctions(){
@@ -115,8 +117,8 @@ var model = module.exports = {
 							next(null, funcs);
 						});
 					}
-				});	
+				});
 			}
-		});		
+		});
 	}
-}
+};

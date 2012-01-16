@@ -10,7 +10,7 @@ var syntacticNames = ['sustantivo',
 					  ''];
 
 $.fn.searchSuccess = function(syntacticFunctions, word, appearances){
-		/* result es un array con las funciones sintácticas de 
+		/* result es un array con las funciones sintácticas de
 		 * la palabra consultada, hay que mostrar todos los valores
 		 * que contiene.
 		 *
@@ -30,7 +30,7 @@ $.fn.searchSuccess = function(syntacticFunctions, word, appearances){
 					  .delay(2000)
 					  .fadeOut(500);
 					addToList( obj, word, appearances );
-				});	
+				});
 			}else{
 				$('<li>',{
 					'class' : 'definition',
@@ -42,7 +42,7 @@ $.fn.searchSuccess = function(syntacticFunctions, word, appearances){
 				  .fadeOut(500);
 				addToList( null, word, appearances );
 			}
-}
+};
 $('#listas > ul > li > a').bind('click', function(){
 	var fn = syntacticNames[$('li.ui-state-active').index()] || 'encontrada';
 	$('span.classified').fadeTo('fast', 0.2).filter('[data-fn~='+fn+']').fadeTo('fast', 1);
@@ -56,15 +56,15 @@ function showSearchResult(text){
 	$('#listas li.ui-state-active a').trigger('click');
 }
 
-/* Función que envía al server la consulta al servicio syntactiSearchService 
+/* Función que envía al server la consulta al servicio syntactiSearchService
  * y procesa la respuesta
  */
 $.fn.search = function(text) {
 	var $this = this;
 	$.get('/syntacticSearch','text='+encodeURIComponent(text),function(data){
 		var funcs = data.funcs, counts = data.counts, len = Object.keys(funcs).length;
-		text = text.replace(/([a-zA-Z0-9áéíóú]+)/g,'{$1}');
-		for (word in funcs){
+		text = text.replace(/([a-zA-Záéíóú]+)/g,'{$1}');
+		for (var word in funcs){
 			if (funcs.hasOwnProperty(word)){
 				var re = new RegExp('{'+word+'}','g'), appearances = counts[word], title = funcs[word].map(function(obj){
 					if (obj.fn){
@@ -86,7 +86,7 @@ $.fn.search = function(text) {
 			}
 		}
 	});
-}
+};
 //end of function search()
 
 
@@ -136,7 +136,7 @@ function addToList( obj, word, appearances ){
 	}else{
 		//Suma 1 aparición más de esa palabra en el texto
 		var counter = span.next('.counter');
-		counter.text(parseInt(counter.text())+1);
+		counter.text(parseInt(counter.text(), 10)+1);
 	}
 }
 //end of function addToList()
