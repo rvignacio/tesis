@@ -2,18 +2,24 @@
 	$('.syntacticSearch').syntacticSearch();
 	
 	$(':file').change(function(){
-		var reader = new FileReader();
+		var $this = $(this).attr('disabled', 'disabled'), reader = new FileReader(), initText = $this.val();
+		$this.val('Procesando...');
 		reader.readAsText(this.files[0]);
 		reader.onload = function(){
-			$('.syntacticSearch').search(reader.result);
+			$('.syntacticSearch').search(reader.result, function(){
+				$this.val(initText).removeAttr('disabled');
+			});
 		};
 	});
 	/* Función del botón Analizar del textarea. Envía todo el texto pegado al server para que este lo separe y
 	 * devuelva etiquetado
 	 */
 	$('.txtArea :button').on('click', function(){
-		var text = $(this).closest('.txtArea').find('textarea').val();
-		$('.syntacticSearch').search(text);
+		var $this = $(this).attr('disabled', 'disabled'), text = $this.closest('.txtArea').find('textarea').val(), initText = $this.val();
+		$this.val('Procesando...');
+		$('.syntacticSearch').search(text, function(){
+			$this.val(initText).removeAttr('disabled');
+		});
 		$('.lista li').remove();
 	});
 

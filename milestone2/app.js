@@ -52,7 +52,8 @@ app.get('/words/assign', mws.getUnfound, function(req, res){
 				  'pronombre']
 	});
 });
-app.get('/syntacticSearch',mws.searchFunctions, function(req, res){
+app.get('/syntacticSearch',mws.searchFunctions, mws.sortWords, function(req, res){
+	console.log('response sent!');
 	res.send(req.data);
 });
 

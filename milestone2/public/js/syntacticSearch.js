@@ -59,32 +59,33 @@ function showSearchResult(text){
 /* Función que envía al server la consulta al servicio syntactiSearchService
  * y procesa la respuesta
  */
-$.fn.search = function(text) {
+$.fn.search = function(text, cb) {
 	var $this = this;
 	$.get('/syntacticSearch','text='+encodeURIComponent(text),function(data){
-		var funcs = data.funcs, counts = data.counts, len = Object.keys(funcs).length;
+		var funcs = data.funcs, counts = data.counts, words = data.words, len = words.length, i = 0, word, mapper = function(obj){
+			if (obj.fn){
+				return obj.fn + ' (' + obj.weight + ')';
+			}else{
+				return 'no encontrada';
+			}
+		};
 		text = text.replace(/([a-zA-Záéíóú]+)/g,'{$1}');
-		for (var word in funcs){
+		for (;i < len; i++){
+			word = words[i];
 			if (funcs.hasOwnProperty(word)){
-				var re = new RegExp('{'+word+'}','g'), appearances = counts[word], title = funcs[word].map(function(obj){
-					if (obj.fn){
-						return obj.fn + ' (' + obj.weight + ')';
-					}else{
-						return 'no encontrada';
-					}
-				}).join(', ').replace(/, ([^,]*)$/,' y $1');
+				var re = new RegExp('{'+word+'}','g'), appearances = counts[word], title = funcs[word].map(mapper).join(', ').replace(/, ([^,]*)$/,' y $1');
 				if (title){
 					text = text.replace(re,'<span class="classified" data-fn="'+title+'">'+word+' <span class="tooltip">'+title+'</span></span>');
 				}else{
 					text = text.replace(re,word);
 				}
-				len -= 1;
-				if (!len){
-					showSearchResult(text);
-				}
 				$this.searchSuccess(funcs[word], word, appearances);
 			}
 		}
+		if (typeof cb !== 'undefined'){
+			cb();
+		}
+		showSearchResult(text);
 	});
 };
 //end of function search()
@@ -128,7 +129,7 @@ function addToList( obj, word, appearances ){
 	if (!span.length){
 		//Agrega una palabra nueva a la lista, junto con el contador
 		$('<li>',{
-			html: '<span class="word">'+word+'</span> <span class="counter">'+(appearances || 1)+'</span>'
+			html: '<span class="word">'+word+'</span> (<span class="counter">'+(appearances || 1)+'</span> ' + (appearances > 1 ? 'veces' : 'vez') + ')'
 		}).appendTo(ul)
 		  .hide()
 		  .data('info', obj)

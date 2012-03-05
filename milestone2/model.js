@@ -48,6 +48,12 @@ var model = module.exports = {
 	getUnfound: function(next){
 		recli.smembers('function::words', next);
 	},
+	sortWords: function(data, next){
+		data.words.sort(function(a, b){
+			return data.counts[b] - data.counts[a];
+		});
+		next();
+	},
 	searchFunctions: function(text, next){
 		//var words = text.match(/[a-zA-Z0-9áéíóú]+/g), matches = {}, words_len = words.length, counts = {};
 		var words = text.match(/[a-zA-Záéíóú]+/g), matches = {}, words_len = words.length, counts = {};
@@ -69,7 +75,8 @@ var model = module.exports = {
 						if (over){
 							next(null, {
 								'funcs': matches,
-								'counts': counts
+								'counts': counts,
+								'words': words
 							});
 						}
 					});
@@ -113,7 +120,7 @@ var model = module.exports = {
 								next(new Error('error when adding \''+word+'\' data: '+err));
 							}
 							multi.exec();
-							console.log('functions from \''+word+'\' found remotely');
+							console.log('functions from \''+word+'\' ' + (funcs[0] ? '' : 'NOT ') + 'found remotely');
 							next(null, funcs);
 						});
 					}

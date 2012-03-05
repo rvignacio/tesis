@@ -31,8 +31,14 @@ module.exports = {
 			if (err){
 				next(err);
 			}
-			console.log('functions found');
+			console.log('mws.js - searchFunctions: functions found');
 			req.data = data;
+			next();
+		});
+	},
+	sortWords: function(req, res, next){
+		model.sortWords(req.data, function(){
+			console.log('mws.js - sortWords: words sorted');
 			next();
 		});
 	}
